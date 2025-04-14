@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImagesIcon, MegaphoneIcon } from "lucide-react";
 import Typewriter from "@/components/ui/typewriter";
+import TestimonialCarousel from "@/components/testimonial-carousel";
 
 const HeroSection = () => {
   return (
@@ -82,7 +83,7 @@ const AboutSection = () => {
           <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[-3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group">
             <Image
               src="/brand/about-image-1.jpg"
-              alt="Vista da cidade de Terra Nova do Norte"
+              alt="Natureza em Terra Nova do Norte "
               fill
               className="object-cover rounded-lg shadow-xl"
             />
@@ -94,7 +95,7 @@ const AboutSection = () => {
           <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group">
             <Image
               src="/brand/about-image-2.jpg"
-              alt="Natureza em Terra Nova do Norte"
+              alt="Vista da cidade de Terra Nova do Norte"
               fill
               className="object-cover rounded-lg shadow-xl"
             />
@@ -116,11 +117,32 @@ const AboutSection = () => {
   );
 };
 
+const TestimonialsSection = () => {
+  return (
+    <section className="py-16 bg-gradient-to-b from-white to-gray-100">
+      <div className="container mx-auto px-6 md:px-12">
+        <h2 className="text-3xl font-bold text-brand-blue text-center mb-4">
+          Qual a opinião dos moradores?
+        </h2>
+
+        <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
+          Convidamos alguns moradores para compartilhar suas experiências e
+          impressões sobre Terra Nova do Norte. Confira o que eles têm a dizer
+          sobre nossa cidade.
+        </p>
+
+        <TestimonialCarousel />
+      </div>
+    </section>
+  );
+};
+
 export default function Page() {
   return (
     <main>
       <HeroSection />
       <AboutSection />
+      <TestimonialsSection />
     </main>
   );
 }
