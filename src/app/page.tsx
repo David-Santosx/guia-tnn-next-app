@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ImagesIcon, MegaphoneIcon } from "lucide-react";
 import Typewriter from "@/components/ui/typewriter";
 import TestimonialCarousel from "@/components/testimonial-carousel";
+import EventsCarousel from "@/components/events-carousel";
 
 const HeroSection = () => {
   return (
@@ -137,12 +138,89 @@ const TestimonialsSection = () => {
   );
 };
 
+// Event interface and data can be moved to a separate file later if needed
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  date: string;
+  time: string;
+  imageUrl: string;
+}
+
+const upcomingEvents: Event[] = [
+  {
+    id: "event-1",
+    title: "Festival de Música Regional",
+    description:
+      "Venha curtir as melhores bandas e artistas da região em um evento para toda a família.",
+    location: "Praça Central",
+    date: "15 de Dezembro, 2023",
+    time: "19:00 - 23:00",
+    imageUrl:
+      "https://placehold.co/600x400/brand-blue/white?text=Festival+de+Música",
+  },
+  {
+    id: "event-2",
+    title: "Feira de Produtores Locais",
+    description:
+      "Produtos frescos, artesanato e gastronomia típica diretamente dos produtores da nossa região.",
+    location: "Mercado Municipal",
+    date: "10 de Dezembro, 2023",
+    time: "08:00 - 14:00",
+    imageUrl:
+      "https://placehold.co/600x400/brand-orange/white?text=Feira+Local",
+  },
+  {
+    id: "event-3",
+    title: "Exposição Fotográfica: Terra Nova em Foco",
+    description:
+      "Uma jornada visual pela história e belezas naturais do nosso município através de fotografias históricas e contemporâneas.",
+    location: "Centro Cultural",
+    date: "5 a 20 de Dezembro, 2023",
+    time: "09:00 - 18:00",
+    imageUrl:
+      "https://placehold.co/600x400/444/white?text=Exposição+Fotográfica",
+  },
+];
+
+const EventsSection = () => {
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-6 md:px-12">
+        <h2 className="text-3xl font-bold text-brand-blue text-center mb-4">
+          Próximos Eventos
+        </h2>
+
+        <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
+          Confira os eventos que estão acontecendo em Terra Nova do Norte. Venha
+          participar e vivenciar momentos especiais em nossa cidade!
+        </p>
+
+        <EventsCarousel events={upcomingEvents} autoRotateInterval={3000} />
+
+        <div className="text-center mt-2">
+          <Link
+            href="/eventos"
+            className="bg-brand-orange text-white font-medium py-3 px-6 rounded-md shadow-md inline-flex items-center justify-center item-hover"
+          >
+            <MegaphoneIcon className="w-5 h-5 mr-2" />
+            Ver todos os eventos
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function Page() {
   return (
     <main>
       <HeroSection />
       <AboutSection />
       <TestimonialsSection />
+      <EventsSection />
     </main>
   );
 }
