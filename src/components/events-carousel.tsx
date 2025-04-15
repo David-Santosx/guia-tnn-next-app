@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { CalendarIcon, ClockIcon, MapPinIcon } from "lucide-react";
 
@@ -24,17 +24,49 @@ export default function EventsCarousel({
   autoRotateInterval = 3000 
 }: EventsCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   
+  // Set up intersection observer to detect when carousel is visible
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2, // Consider visible when 20% of the carousel is in view
+        rootMargin: "0px"
+      }
+    );
+    
+    if (carouselRef.current) {
+      observer.observe(carouselRef.current);
+    }
+    
+    return () => {
+      if (carouselRef.current) {
+        observer.unobserve(carouselRef.current);
+      }
+    };
+  }, []);
+  
+  // Only auto-rotate when the carousel is visible
+  useEffect(() => {
+    if (!isVisible || !autoRotateInterval) return;
+    
     const interval = setInterval(() => {
       setActiveIndex((current) => (current + 1) % events.length);
     }, autoRotateInterval);
     
     return () => clearInterval(interval);
-  }, [events.length, autoRotateInterval]);
+  }, [events.length, autoRotateInterval, isVisible]);
   
   return (
-    <div className="relative max-w-5xl mx-auto h-[550px] md:h-[500px]">
+    <div 
+      ref={carouselRef}
+      className="relative max-w-5xl mx-auto h-[550px] md:h-[500px]"
+    >
       {events.map((event, index) => {
         const displayIndex = (index - activeIndex + events.length) % events.length;
         

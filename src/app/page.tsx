@@ -200,7 +200,7 @@ const EventsSection = () => {
 
         <EventsCarousel events={upcomingEvents} autoRotateInterval={3000} />
 
-        <div className="text-center mt-2">
+        <div className="text-center mt-12 lg:mt-2">
           <Link
             href="/eventos"
             className="bg-brand-orange text-white font-medium py-3 px-6 rounded-md shadow-md inline-flex items-center justify-center item-hover"
