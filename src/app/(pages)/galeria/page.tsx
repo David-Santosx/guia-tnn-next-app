@@ -157,75 +157,87 @@ export default function Page() {
   return (
     <main className="py-16 px-6 md:px-12 lg:px-16">
       <div className="max-w-7xl mx-auto">
-        <ScrollReveal delay={0} direction="up">
-          <h1 className="text-3xl md:text-4xl font-bold text-brand-blue mb-2">
-            Galeria de Fotos
-          </h1>
-        </ScrollReveal>
-        
-        <ScrollReveal delay={100} direction="up">
-          <p className="text-gray-600 mb-8">
-            Explore as belezas e momentos especiais de Terra Nova do Norte
-          </p>
-        </ScrollReveal>
-        
+        <h1 className="text-3xl md:text-4xl font-bold text-brand-blue mb-2">
+          Galeria de Fotos
+        </h1>
+
+        <p className="text-gray-600 mb-8">
+          Explore as belezas e momentos especiais de Terra Nova do Norte
+        </p>
+
         {/* Enhanced Filters Section with Labels and Icons */}
-        <ScrollReveal delay={200} direction="up">
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
-            <div className="flex-1 space-y-2">
-              <label htmlFor="sort-order" className="text-sm font-medium text-gray-700 flex items-center">
-                <Clock className="w-4 h-4 mr-1 text-brand-blue" />
-                Ordenar por data
-              </label>
-              <select
-                id="sort-order"
-                className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue"
-                value={sortOrder}
-                onChange={handleSortChange}
-              >
-                <option value="newest">Mais recentes</option>
-                <option value="oldest">Mais antigas</option>
-              </select>
-            </div>
-            
-            <div className="flex-1 space-y-2">
-              <label htmlFor="category-filter" className="text-sm font-medium text-gray-700 flex items-center">
-                <Filter className="w-4 h-4 mr-1 text-brand-orange" />
-                Filtrar por categoria
-              </label>
-              <select
-                id="category-filter"
-                className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue"
-                value={selectedCategory || ""}
-                onChange={handleCategoryChange}
-              >
-                <option value="">Todas categorias</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="flex-1 space-y-2">
+            <label
+              htmlFor="sort-order"
+              className="text-sm font-medium text-gray-700 flex items-center"
+            >
+              <Clock className="w-4 h-4 mr-1 text-brand-blue" />
+              Ordenar por data
+            </label>
+            <select
+              id="sort-order"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue"
+              value={sortOrder}
+              onChange={handleSortChange}
+            >
+              <option value="newest">Mais recentes</option>
+              <option value="oldest">Mais antigas</option>
+            </select>
           </div>
-        </ScrollReveal>
-        
+
+          <div className="flex-1 space-y-2">
+            <label
+              htmlFor="category-filter"
+              className="text-sm font-medium text-gray-700 flex items-center"
+            >
+              <Filter className="w-4 h-4 mr-1 text-brand-orange" />
+              Filtrar por categoria
+            </label>
+            <select
+              id="category-filter"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue"
+              value={selectedCategory || ""}
+              onChange={handleCategoryChange}
+            >
+              <option value="">Todas categorias</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {/* Bento Grid Gallery */}
         {filteredPhotos.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[250px]">
             {filteredPhotos.map((photo, index) => (
-              <ScrollReveal 
+              <ScrollReveal
                 key={photo.id}
                 delay={Math.min(index, 5) * 100}
-                direction="up"
+                direction={index % 2 === 0 ? "up" : "left"}
+                preset={index % 3 === 0 ? "zoom" : "slide"}
+                duration={800}
+                animationConfig={{
+                  distance: 25,
+                  easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
                 className={`relative group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer
-                  ${photo.size === 'wide' ? 'col-span-2' : ''}
-                  ${photo.size === 'tall' ? 'row-span-2' : ''}
-                  ${photo.size === 'large' ? 'col-span-2 row-span-2' : ''}
-                  ${photo.size === 'medium' ? 'col-span-1 row-span-1 sm:col-span-2 sm:row-span-1' : ''}
-                  ${photo.size === 'small' ? '' : ''}`}
+                  ${photo.size === "wide" ? "col-span-2" : ""}
+                  ${photo.size === "tall" ? "row-span-2" : ""}
+                  ${photo.size === "large" ? "col-span-2 row-span-2" : ""}
+                  ${
+                    photo.size === "medium"
+                      ? "col-span-1 row-span-1 sm:col-span-2 sm:row-span-1"
+                      : ""
+                  }
+                  ${photo.size === "small" ? "" : ""}`}
                 onClick={() => handlePhotoClick(photo)}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
-                
+
                 <LazyImage
                   src={photo.imageUrl}
                   alt={photo.title}
@@ -233,18 +245,24 @@ export default function Page() {
                   priority={true}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                
+
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-transform duration-300">
                   <div className="flex items-center mb-1">
                     <Tag className="w-4 h-4 text-brand-orange mr-1" />
-                    <span className="text-xs text-white/90 font-medium">{photo.category}</span>
+                    <span className="text-xs text-white/90 font-medium">
+                      {photo.category}
+                    </span>
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-1">{photo.title}</h3>
-                  
+
+                  <h3 className="text-xl font-bold text-white mb-1">
+                    {photo.title}
+                  </h3>
+
                   <div className="hidden group-hover:block animate-fadeIn">
-                    <p className="text-white/80 text-sm mb-2 line-clamp-2">{photo.description}</p>
-                    
+                    <p className="text-white/80 text-sm mb-2 line-clamp-2">
+                      {photo.description}
+                    </p>
+
                     <div className="flex flex-wrap gap-y-1 gap-x-3 text-xs text-white/70">
                       <div className="flex items-center">
                         <Calendar className="w-3 h-3 mr-1" />
@@ -265,16 +283,18 @@ export default function Page() {
             ))}
           </div>
         ) : (
-          <ScrollReveal>
+          <ScrollReveal preset="fade" duration={1000}>
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">Nenhuma foto encontrada com os filtros selecionados.</p>
+              <p className="text-gray-500 text-lg">
+                Nenhuma foto encontrada com os filtros selecionados.
+              </p>
             </div>
           </ScrollReveal>
         )}
       </div>
-      
+
       {/* Photo Modal */}
-      <PhotoModal 
+      <PhotoModal
         photo={selectedPhoto}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
