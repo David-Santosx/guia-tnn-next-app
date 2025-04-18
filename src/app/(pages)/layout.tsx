@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,9 +13,12 @@ export default function PagesLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <div>
-        <Header />
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow">
         {children}
-      </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
