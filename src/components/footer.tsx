@@ -3,9 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Settings, Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
-import { useState } from "react";
+import { Credits } from "@/components/credits";
 
-// Types for our footer sections
 interface FooterLink {
   text: string;
   href: string;
@@ -47,7 +46,6 @@ const FooterSection = ({ section }: { section: FooterSection }) => {
 };
 
 export default function Footer() {
-  const [year] = useState(new Date().getFullYear());
   
   const footerSections: FooterSection[] = [
     {
@@ -118,9 +116,7 @@ export default function Footer() {
       {/* Copyright bar */}
       <div className="border-t border-gray-700 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {year} Guia TNN. Todos os direitos reservados.
-          </p>
+          <Credits variant="dark" />
           <div className="flex space-x-4">
             <Link href="/termos" className="text-gray-400 hover:text-white text-sm transition-colors">
               Termos de Uso
