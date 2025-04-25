@@ -1,161 +1,118 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Calendar, MapPin, User, Tag, Filter, Clock } from "lucide-react";
 import LazyImage from "@/components/ui/lazy-image";
 import ScrollReveal from "@/components/ui/scroll-reveal";
 import PhotoModal from "@/components/ui/photo-modal";
+import { GalleryPhoto } from "@/components/gallery/photo-fetcher";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-interface Photo {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-  photographer: string;
-  category: "Natureza" | "Eventos" | "Locais" | "Festivais";
-  imageUrl: string;
+interface PhotoWithSize extends GalleryPhoto {
   size: "small" | "medium" | "large" | "wide" | "tall";
 }
 
-const photos: Photo[] = [
-  {
-    id: "photo-1",
-    title: "Cachoeira do Paraíso",
-    date: "15/10/2023",
-    location: "Zona Rural",
-    description: "Uma das mais belas quedas d'água da região, cercada por vegetação nativa.",
-    photographer: "João Silva",
-    category: "Natureza",
-    imageUrl: "https://fakeimg.pl/600x800/005f73/ffffff?text=Cachoeira+do+Paraíso",
-    size: "tall"
-  },
-  {
-    id: "photo-2",
-    title: "Festival da Colheita",
-    date: "20/09/2023",
-    location: "Praça Central",
-    description: "Celebração anual que marca o período de colheita com música e gastronomia local.",
-    photographer: "Maria Oliveira",
-    category: "Festivais",
-    imageUrl: "https://fakeimg.pl/800x500/ee9b00/ffffff?text=Festival+da+Colheita",
-    size: "wide"
-  },
-  {
-    id: "photo-3",
-    title: "Igreja Matriz",
-    date: "05/08/2023",
-    location: "Centro",
-    description: "A histórica igreja matriz que é um dos símbolos arquitetônicos da cidade.",
-    photographer: "Carlos Mendes",
-    category: "Locais",
-    imageUrl: "https://fakeimg.pl/500x600/ae2012/ffffff?text=Igreja+Matriz",
-    size: "medium"
-  },
-  {
-    id: "photo-4",
-    title: "Roda de Viola",
-    date: "12/07/2023",
-    location: "Centro Cultural",
-    description: "Encontro tradicional de violeiros que mantém viva a cultura musical da região.",
-    photographer: "Ana Souza",
-    category: "Eventos",
-    imageUrl: "https://fakeimg.pl/500x500/9b2226/ffffff?text=Roda+de+Viola",
-    size: "small"
-  },
-  {
-    id: "photo-5",
-    title: "Rio das Pedras",
-    date: "30/06/2023",
-    location: "Parque Ecológico",
-    description: "Um dos principais pontos turísticos naturais, ideal para banho e contemplação.",
-    photographer: "Pedro Costa",
-    category: "Natureza",
-    imageUrl: "https://fakeimg.pl/800x600/0a9396/ffffff?text=Rio+das+Pedras",
-    size: "large"
-  },
-  {
-    id: "photo-6",
-    title: "Desfile Cívico",
-    date: "07/09/2023",
-    location: "Avenida Principal",
-    description: "Tradicional desfile de 7 de setembro com participação das escolas e entidades.",
-    photographer: "Luiza Ferreira",
-    category: "Eventos",
-    imageUrl: "https://fakeimg.pl/500x700/001219/ffffff?text=Desfile+Cívico",
-    size: "tall"
-  },
-  {
-    id: "photo-7",
-    title: "Mercado Municipal",
-    date: "15/05/2023",
-    location: "Centro",
-    description: "Ponto de encontro e comércio local onde se encontram produtos típicos da região.",
-    photographer: "Roberto Alves",
-    category: "Locais",
-    imageUrl: "https://fakeimg.pl/600x400/ca6702/ffffff?text=Mercado+Municipal",
-    size: "small"
-  },
-  {
-    id: "photo-8",
-    title: "Festival de Inverno",
-    date: "22/07/2023",
-    location: "Parque de Exposições",
-    description: "Evento cultural que reúne música, gastronomia e arte durante o período de inverno.",
-    photographer: "Fernanda Lima",
-    category: "Festivais",
-    imageUrl: "https://fakeimg.pl/600x400/bb3e03/ffffff?text=Festival+de+Inverno",
-    size: "medium"
-  },
-];
-
 export default function Page() {
+  const [photos, setPhotos] = useState<PhotoWithSize[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoWithSize | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  // Handle photo click to open modal
-  const handlePhotoClick = (photo: Photo) => {
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/gallery");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch photos");
+        }
+
+        const data: GalleryPhoto[] = await response.json();
+
+        // Assign random sizes to photos for the bento grid layout
+        const sizesArray: Array<
+          "small" | "medium" | "large" | "wide" | "tall"
+        > = ["small", "medium", "large", "wide", "tall"];
+
+        const photosWithSizes = data.map((photo, index) => ({
+          ...photo,
+          size: sizesArray[index % sizesArray.length],
+        }));
+
+        setPhotos(photosWithSizes);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
+        console.error("Error fetching photos:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPhotos();
+  }, []);
+
+  const handlePhotoClick = (photo: PhotoWithSize) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
   };
-  
-  // Handle modal close
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    // Optional: delay clearing the photo data to allow for exit animations
     setTimeout(() => setSelectedPhoto(null), 300);
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value || null);
   };
-  
+
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(e.target.value as "newest" | "oldest");
   };
 
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "Data não informada";
+    try {
+      return format(new Date(dateString), "dd/MM/yyyy", { locale: ptBR });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return "Data inválida";
+    }
+  };
+
   const filteredPhotos = useMemo(() => {
     return photos
-      .filter(photo => {
-        const matchesCategory = selectedCategory ? photo.category === selectedCategory : true;
+      .filter((photo) => {
+        const matchesCategory = selectedCategory
+          ? photo.category === selectedCategory
+          : true;
         return matchesCategory;
       })
       .sort((a, b) => {
-        const dateA = new Date(a.date.split('/').reverse().join('-'));
-        const dateB = new Date(b.date.split('/').reverse().join('-'));
-        
-        return sortOrder === "newest" 
-          ? dateB.getTime() - dateA.getTime() 
-          : dateA.getTime() - dateB.getTime();
-      });
-  }, [sortOrder, selectedCategory]);
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
 
-  const categories = ["Natureza", "Eventos", "Locais", "Festivais"];
+        return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+      });
+  }, [photos, sortOrder, selectedCategory]);
+
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(
+      new Set(photos.map((photo) => photo.category).filter(Boolean))
+    );
+    return uniqueCategories as string[];
+  }, [photos]);
 
   return (
-    <main className="py-16 px-6 md:px-12 lg:px-16">
+    <main className="py-16 px-6 md:px-12 lg:px-16 bg-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold text-brand-blue mb-2">
           Galeria de Fotos
@@ -165,7 +122,7 @@ export default function Page() {
           Explore as belezas e momentos especiais de Terra Nova do Norte
         </p>
 
-        {/* Enhanced Filters Section with Labels and Icons */}
+        {/* Filters Section */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1 space-y-2">
             <label
@@ -210,8 +167,60 @@ export default function Page() {
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-orange"></div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !isLoading && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-6">
+            <strong className="font-bold">Erro: </strong>
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !error && filteredPhotos.length === 0 && (
+          <div className="text-center py-16 px-4">
+            <div className="max-w-md mx-auto">
+              <svg
+                className="w-24 h-24 mx-auto text-gray-300 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                Nenhuma imagem encontrada
+              </h3>
+              <p className="text-gray-500 mb-6">
+                {selectedCategory
+                  ? `Não encontramos fotos na categoria "${selectedCategory}".`
+                  : "Não há fotos disponíveis na galeria no momento."}
+              </p>
+              {selectedCategory && (
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-blue hover:bg-brand-blue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue"
+                >
+                  Ver todas as categorias
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Bento Grid Gallery */}
-        {filteredPhotos.length > 0 ? (
+        {!isLoading && !error && filteredPhotos.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[250px]">
             {filteredPhotos.map((photo, index) => (
               <ScrollReveal
@@ -242,60 +251,63 @@ export default function Page() {
                   src={photo.imageUrl}
                   alt={photo.title}
                   fill
-                  priority={true}
+                  priority={index < 4}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-transform duration-300">
-                  <div className="flex items-center mb-1">
-                    <Tag className="w-4 h-4 text-brand-orange mr-1" />
-                    <span className="text-xs text-white/90 font-medium">
-                      {photo.category}
-                    </span>
-                  </div>
+                  {photo.category && (
+                    <div className="flex items-center mb-1">
+                      <Tag className="w-4 h-4 text-brand-orange mr-1" />
+                      <span className="text-xs text-white/90 font-medium">
+                        {photo.category}
+                      </span>
+                    </div>
+                  )}
 
                   <h3 className="text-xl font-bold text-white mb-1">
                     {photo.title}
                   </h3>
 
                   <div className="hidden group-hover:block animate-fadeIn">
-                    <p className="text-white/80 text-sm mb-2 line-clamp-2">
-                      {photo.description}
-                    </p>
+                    {photo.description && (
+                      <p className="text-white/80 text-sm mb-2 line-clamp-2">
+                        {photo.description}
+                      </p>
+                    )}
 
                     <div className="flex flex-wrap gap-y-1 gap-x-3 text-xs text-white/70">
-                      <div className="flex items-center">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        <span>{photo.date}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-3 h-3 mr-1" />
-                        <span>{photo.location}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <User className="w-3 h-3 mr-1" />
-                        <span>{photo.photographer}</span>
-                      </div>
+                      {photo.date && (
+                        <div className="flex items-center">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          <span>{formatDate(photo.date)}</span>
+                        </div>
+                      )}
+                      {photo.location && (
+                        <div className="flex items-center">
+                          <MapPin className="w-3 h-3 mr-1" />
+                          <span>{photo.location}</span>
+                        </div>
+                      )}
+                      {photo.photographer && (
+                        <div className="flex items-center">
+                          <User className="w-3 h-3 mr-1" />
+                          <span>{photo.photographer}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </ScrollReveal>
             ))}
           </div>
-        ) : (
-          <ScrollReveal preset="fade" duration={1000}>
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                Nenhuma foto encontrada com os filtros selecionados.
-              </p>
-            </div>
-          </ScrollReveal>
         )}
       </div>
 
       {/* Photo Modal */}
       <PhotoModal
-        photo={selectedPhoto}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        photo={selectedPhoto as any}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
