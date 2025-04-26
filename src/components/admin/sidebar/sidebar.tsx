@@ -13,6 +13,7 @@ import {
   LogOut,
   ImageIcon,
   Crown,
+  Users,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarSection } from "./sidebar-section";
