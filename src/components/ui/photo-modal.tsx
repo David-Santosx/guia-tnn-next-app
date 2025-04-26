@@ -82,56 +82,73 @@ export default function PhotoModal({
 
       {/* Modal Content */}
       <div
-        className="relative bg-white rounded-xl overflow-hidden max-w-5xl w-full max-h-[90vh] shadow-2xl flex flex-col md:flex-row"
+        className="relative bg-white rounded-lg overflow-hidden max-w-5xl w-full max-h-[90vh] shadow-2xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          className="absolute top-3 right-3 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-colors"
+          className="absolute top-3 right-3 z-10 bg-gray-200/80 hover:bg-gray-300/90 text-gray-700 rounded-full p-2 transition-colors"
           onClick={handleClose}
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
 
         {/* Image Container */}
-        <div className="relative w-full md:w-2/3 h-[300px] md:h-auto">
+        <div className="relative w-full h-[50vh] md:h-[65vh]">
           <Image
             src={photo.imageUrl}
             alt={photo.title}
             fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 66vw"
+            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 90vw"
             priority
           />
         </div>
 
         {/* Details Container */}
-        <div className="w-full md:w-1/3 p-6 overflow-y-auto">
-          <div className="flex items-center mb-3">
-            <Tag className="w-5 h-5 text-brand-orange mr-2" />
-            <span className="text-sm font-medium text-brand-orange">
-              {photo.category}
-            </span>
-          </div>
-
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <div className="w-full p-6 bg-white text-gray-800">
+          <h2 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">
             {photo.title}
           </h2>
 
-          <p className="text-gray-700 mb-6">{photo.description}</p>
+          <p className="text-gray-600 mb-4">{photo.description}</p>
 
-          <div className="space-y-3 text-sm text-gray-600">
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-              <span>Data: {formatDate(photo.date)}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2">
+              <Tag className="w-4 h-4 text-brand-orange" />
+              <span className="text-gray-600">
+                Categoria:{" "}
+                <span className="text-gray-800 font-medium">
+                  {photo.category}
+                </span>
+              </span>
             </div>
-            <div className="flex items-center">
-              <MapPin className="w-4 h-4 mr-2 text-gray-500" />
-              <span>Local: {photo.location}</span>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-brand-orange" />
+              <span className="text-gray-600">
+                Data:{" "}
+                <span className="text-gray-800 font-medium">
+                  {formatDate(photo.date)}
+                </span>
+              </span>
             </div>
-            <div className="flex items-center">
-              <User className="w-4 h-4 mr-2 text-gray-500" />
-              <span>Fotógrafo: {photo.photographer}</span>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-brand-orange" />
+              <span className="text-gray-600">
+                Local:{" "}
+                <span className="text-gray-800 font-medium">
+                  {photo.location}
+                </span>
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4 text-brand-orange" />
+              <span className="text-gray-600">
+                Fotógrafo:{" "}
+                <span className="text-gray-800 font-medium">
+                  {photo.photographer}
+                </span>
+              </span>
             </div>
           </div>
         </div>

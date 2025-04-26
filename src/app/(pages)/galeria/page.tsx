@@ -36,15 +36,24 @@ export default function Page() {
 
         const data: GalleryPhoto[] = await response.json();
 
-        // Assign random sizes to photos for the bento grid layout
+        // Distribuir tamanhos de forma mais equilibrada para o layout responsivo
         const sizesArray: Array<
           "small" | "medium" | "large" | "wide" | "tall"
-        > = ["small", "medium", "large", "wide", "tall"];
+        > = ["small", "medium", "wide", "tall", "large"];
 
-        const photosWithSizes = data.map((photo, index) => ({
-          ...photo,
-          size: sizesArray[index % sizesArray.length],
-        }));
+        // Garantir que fotos grandes e largas não fiquem agrupadas
+        const photosWithSizes = data.map((photo, index) => {
+          // Evitar muitas fotos grandes em sequência
+          const size =
+            index % 5 === 0 && index > 0
+              ? "small"
+              : sizesArray[index % sizesArray.length];
+
+          return {
+            ...photo,
+            size,
+          };
+        });
 
         setPhotos(photosWithSizes);
       } catch (err) {
@@ -219,9 +228,9 @@ export default function Page() {
           </div>
         )}
 
-        {/* Bento Grid Gallery */}
+        {/* Responsive Gallery Grid */}
         {!isLoading && !error && filteredPhotos.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[250px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredPhotos.map((photo, index) => (
               <ScrollReveal
                 key={photo.id}
@@ -233,16 +242,15 @@ export default function Page() {
                   distance: 25,
                   easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
-                className={`relative group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer
-                  ${photo.size === "wide" ? "col-span-2" : ""}
-                  ${photo.size === "tall" ? "row-span-2" : ""}
-                  ${photo.size === "large" ? "col-span-2 row-span-2" : ""}
+                className={`relative group overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer h-[280px] sm:h-[250px]
+                  ${photo.size === "wide" ? "md:col-span-2" : ""}
+                  ${photo.size === "tall" ? "md:row-span-2 md:h-[520px]" : ""}
                   ${
-                    photo.size === "medium"
-                      ? "col-span-1 row-span-1 sm:col-span-2 sm:row-span-1"
+                    photo.size === "large"
+                      ? "md:col-span-2 md:row-span-2 md:h-[520px]"
                       : ""
                   }
-                  ${photo.size === "small" ? "" : ""}`}
+                  ${photo.size === "medium" ? "md:col-span-2" : ""}`}
                 onClick={() => handlePhotoClick(photo)}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
@@ -252,6 +260,7 @@ export default function Page() {
                   alt={photo.title}
                   fill
                   priority={index < 4}
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
