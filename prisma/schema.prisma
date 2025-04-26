@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output = "node_modules/.prisma/client"
 }
 
 datasource db {
@@ -16,6 +15,7 @@ model Admin {
   createdAt DateTime @default(now())
   createdBy String?
   photos    Photo[]
+  events    Event[]
 }
 
 model Photo {
@@ -31,4 +31,18 @@ model Photo {
   updatedAt    DateTime      @updatedAt
   uploadedBy   Admin?        @relation(fields: [uploadedById], references: [id])
   uploadedById String?
+}
+
+model Event {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  organization String
+  date         DateTime
+  time         String
+  location     String
+  imageUrl     String
+  createdAt    DateTime @default(now())
+  createdBy    Admin    @relation(fields: [createdById], references: [id])
+  createdById  String
 }

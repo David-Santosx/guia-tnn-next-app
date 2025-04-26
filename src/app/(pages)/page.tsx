@@ -1,9 +1,11 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { ImagesIcon, MegaphoneIcon } from "lucide-react";
 import Typewriter from "@/components/ui/typewriter";
 import TestimonialCarousel from "@/components/testimonial-carousel";
 import EventsCarousel from "@/components/events-carousel";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
   return (
@@ -149,57 +151,38 @@ interface Event {
   imageUrl: string;
 }
 
-const upcomingEvents: Event[] = [
-  {
-    id: "event-1",
-    title: "Festival de Música Regional",
-    description:
-      "Venha curtir as melhores bandas e artistas da região em um evento para toda a família.",
-    location: "Praça Central",
-    date: "15 de Dezembro, 2023",
-    time: "19:00 - 23:00",
-    imageUrl:
-      "https://placehold.co/600x400/brand-blue/white?text=Festival+de+Música",
-  },
-  {
-    id: "event-2",
-    title: "Feira de Produtores Locais",
-    description:
-      "Produtos frescos, artesanato e gastronomia típica diretamente dos produtores da nossa região.",
-    location: "Mercado Municipal",
-    date: "10 de Dezembro, 2023",
-    time: "08:00 - 14:00",
-    imageUrl:
-      "https://placehold.co/600x400/brand-orange/white?text=Feira+Local",
-  },
-  {
-    id: "event-3",
-    title: "Exposição Fotográfica: Terra Nova em Foco",
-    description:
-      "Uma jornada visual pela história e belezas naturais do nosso município através de fotografias históricas e contemporâneas.",
-    location: "Centro Cultural",
-    date: "5 a 20 de Dezembro, 2023",
-    time: "09:00 - 18:00",
-    imageUrl:
-      "https://placehold.co/600x400/444/white?text=Exposição+Fotográfica",
-  },
-];
-
 const EventsSection = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/eventos")
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Erro ao buscar eventos");
+        const data = await res.json();
+        setEvents(data);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading)
+    return <div className="py-16 text-center">Carregando eventos...</div>;
+  if (error)
+    return <div className="py-16 text-center text-red-500">{error}</div>;
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-6 md:px-12">
         <h2 className="text-3xl font-bold text-brand-blue text-center mb-4">
           Próximos Eventos
         </h2>
-
         <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
           Confira os eventos que estão acontecendo em Terra Nova do Norte. Venha
           participar e vivenciar momentos especiais em nossa cidade!
         </p>
-
-        <EventsCarousel events={upcomingEvents} autoRotateInterval={3000} />
-
+        <EventsCarousel events={events} autoRotateInterval={3000} />
         <div className="text-center mt-12 lg:mt-2">
           <Link
             href="/eventos"
