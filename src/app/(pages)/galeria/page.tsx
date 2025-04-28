@@ -8,6 +8,7 @@ import PhotoModal from "@/components/ui/photo-modal";
 import { GalleryPhoto } from "@/components/gallery/photo-fetcher";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import CollaborateButton from "@/components/ui/collaborate-button";
 
 interface PhotoWithSize extends GalleryPhoto {
   size: "small" | "medium" | "large" | "wide" | "tall";
@@ -130,6 +131,7 @@ export default function Page() {
         <p className="text-gray-600 mb-8">
           Explore as belezas e momentos especiais de Terra Nova do Norte
         </p>
+        <CollaborateButton />
 
         {/* Filters Section */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
