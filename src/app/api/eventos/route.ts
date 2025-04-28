@@ -1,14 +1,8 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+import { uploadEventImage, deleteEventImage } from '@/lib/supabase/events-storage';
 
 const prisma = new PrismaClient();
-const BUCKET_NAME = 'events-photos';
 
 export async function GET() {
   try {
@@ -38,21 +32,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 });
     }
 
-    const fileExtension = image.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExtension}`;
-    const filePath = `${fileName}`;
-
-    const { error: uploadError } = await supabaseAdmin.storage
-      .from(BUCKET_NAME)
-      .upload(filePath, image);
-
-    if (uploadError) {
-      throw new Error(`Erro no upload da imagem: ${uploadError.message}`);
-    }
-
-    const { data: urlData } = supabaseAdmin.storage
-      .from(BUCKET_NAME)
-      .getPublicUrl(filePath);
+    const imageUrl = await uploadEventImage(image);
 
     const event = await prisma.event.create({
       data: {
@@ -62,15 +42,18 @@ export async function POST(request: Request) {
         date: new Date(date),
         time,
         location,
-        imageUrl: urlData.publicUrl,
+        imageUrl,
         createdById
       }
     });
 
     return NextResponse.json(event);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao criar evento' }, { status: 500 });
+    console.error('Erro ao criar evento:', error);
+    return NextResponse.json({
+      error: 'Erro ao criar evento',
+      details: error instanceof Error ? error.message : 'Erro desconhecido'
+    }, { status: 500 });
   }
 }
 
@@ -98,28 +81,8 @@ export async function PUT(request: Request) {
     let imageUrl = existingEvent.imageUrl;
 
     if (image) {
-      const oldImagePath = existingEvent.imageUrl.split('/').pop();
-      if (oldImagePath) {
-        await supabaseAdmin.storage.from(BUCKET_NAME).remove([oldImagePath]);
-      }
-
-      const fileExtension = image.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExtension}`;
-      const filePath = `${fileName}`;
-
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from(BUCKET_NAME)
-        .upload(filePath, image);
-
-      if (uploadError) {
-        throw new Error(`Erro no upload da imagem: ${uploadError.message}`);
-      }
-
-      const { data: urlData } = supabaseAdmin.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(filePath);
-
-      imageUrl = urlData.publicUrl;
+      await deleteEventImage(existingEvent.imageUrl);
+      imageUrl = await uploadEventImage(image);
     }
 
     const updatedEvent = await prisma.event.update({
@@ -136,8 +99,8 @@ export async function PUT(request: Request) {
     });
 
     return NextResponse.json(updatedEvent);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error('Erro ao atualizar evento:', error);
     return NextResponse.json({ error: 'Erro ao atualizar evento' }, { status: 500 });
   }
 }
@@ -156,16 +119,12 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Evento não encontrado' }, { status: 404 });
     }
 
-    const imagePath = event.imageUrl.split('/').pop();
-    if (imagePath) {
-      await supabaseAdmin.storage.from(BUCKET_NAME).remove([imagePath]);
-    }
-
+    await deleteEventImage(event.imageUrl);
     await prisma.event.delete({ where: { id } });
 
     return NextResponse.json({ message: 'Evento deletado com sucesso' });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error('Erro ao deletar evento:', error);
     return NextResponse.json({ error: 'Erro ao deletar evento' }, { status: 500 });
   }
 }

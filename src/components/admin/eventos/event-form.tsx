@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2, UploadCloud, X } from "lucide-react";
 import { Event } from "@/types/event";
-import { uploadGalleryImage } from "@/lib/supabase/storage";
+import { createEvent, updateEvent } from "@/app/actions/events";
 
 const eventSchema = z.object({
   title: z
@@ -74,32 +74,28 @@ export function EventFormModal({
     setSubmitError(null);
 
     try {
-      let imageUrl = '';
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("date", data.date);
+      formData.append("time", data.time);
+      formData.append("location", data.location);
+
       if (data.imageFile && data.imageFile.length > 0) {
-        imageUrl = await uploadGalleryImage(data.imageFile[0]);
+        formData.append("imageFile", data.imageFile[0]);
       }
 
-      const dateTime = new Date(`${data.date}T${data.time}:00`);
-
-      const eventData = {
-        title: data.title,
-        description: data.description,
-        date: dateTime.toISOString(),
-        location: data.location,
-        imageUrl,
-      };
-
-      const response = await fetch("/api/eventos", {
-        method: event ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          event ? { ...eventData, id: event.id } : eventData
-        ),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Falha ao salvar evento.");
+      if (event?.id) {
+        formData.append("id", event.id);
+        const result = await updateEvent(formData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+      } else {
+        const result = await createEvent(formData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
       }
 
       onEventAdded();
@@ -298,10 +294,12 @@ export function EventFormModal({
                     <input
                       id="imageFile"
                       type="file"
-                      {...register('imageFile')}
+                      {...register("imageFile")}
                       accept="image/*"
                       className="sr-only"
-                      onChange={(e) => handleImageSelect(e.target.files?.[0] as File)}
+                      onChange={(e) =>
+                        handleImageSelect(e.target.files?.[0] as File)
+                      }
                     />
                   </label>
                   <p className="pl-1">ou arraste e solte</p>

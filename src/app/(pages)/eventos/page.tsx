@@ -21,7 +21,7 @@ interface Event {
 
 // Função para buscar eventos (simulada por enquanto)
 async function getEvents(): Promise<Event[]> {
-  const res = await fetch("api/eventos"); // Removed cache: 'no-store'
+  const res = await fetch("http://localhost:3000/api/eventos"); // Removed cache: 'no-store'
   if (!res.ok) throw new Error("Erro ao buscar eventos");
   return res.json();
 }

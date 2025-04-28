@@ -1,4 +1,5 @@
 export interface Event {
+  imageUrl: string | StaticImport;
   id: string;
   title: string;
   description: string;
