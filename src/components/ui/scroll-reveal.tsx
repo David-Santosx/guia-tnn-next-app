@@ -128,8 +128,8 @@ export default function ScrollReveal({
     
     // Set initial styles
     const initialOpacity = config.opacity ? config.opacity[0] : 0;
-    element.style.opacity = initialOpacity.toString();
-    element.style.transform = getInitialTransform();
+    element.style.opacity = isVisible ? "1" : initialOpacity.toString();
+    element.style.transform = isVisible ? "none" : getInitialTransform();
     
     // Fix: Ensure easing is properly applied to the transition
     const easingValue = config.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)";
