@@ -188,11 +188,6 @@ export default function Page() {
                 caminhadas e áreas para piquenique, sendo um local ideal para
                 apreciar a flora e fauna regionais.
               </p>
-              <p>
-                Além disso, o Museu Municipal abriga exposições sobre a história
-                e cultura de Terra Nova do Norte, proporcionando um passeio
-                educativo para os visitantes.
-              </p>
               <div className="flex items-center text-sm text-brand-blue mt-4">
                 <ExternalLink className="w-4 h-4 mr-1" />
                 <a

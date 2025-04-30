@@ -107,3 +107,19 @@ export async function updateEvent(formData: FormData) {
     return { error: error instanceof Error ? error.message : 'Ocorreu um erro desconhecido.' };
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function getEventById(id: string): Promise<any | null> {
+  try {
+    const res = await fetch("http://localhost:3000/api/eventos/" + id, {
+      next: { revalidate: 0 },
+    });
+    if (!res.ok) return null;
+    const event = await res.json();
+    console.log(event.createdBy);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return event as any;
+  } catch {
+    return null;
+  }
+}
