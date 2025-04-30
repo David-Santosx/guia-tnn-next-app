@@ -13,6 +13,7 @@ import {
   LogOut,
   ImageIcon,
   Crown,
+  Megaphone,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarSection } from "./sidebar-section";
@@ -111,6 +112,12 @@ export function Sidebar() {
               icon={Store}
               label="Comércios"
               isActive={pathname.startsWith("/admin/comercios")}
+            />
+            <SidebarItem
+              href="/admin/anuncios"
+              icon={Megaphone}
+              label="Anúncios"
+              isActive={pathname.startsWith("/admin/anuncios")}
             />
           </SidebarSection>
 

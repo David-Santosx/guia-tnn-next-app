@@ -8,14 +8,15 @@ datasource db {
 }
 
 model Admin {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  createdBy String?
-  photos    Photo[]
-  events    Event[]
+  id            String          @id @default(cuid())
+  name          String
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  createdBy     String?
+  photos        Photo[]
+  events        Event[]
+  advertisements Advertisement[]
 }
 
 model Photo {
@@ -45,4 +46,18 @@ model Event {
   createdAt    DateTime @default(now())
   createdBy    Admin    @relation(fields: [createdById], references: [id])
   createdById  String
+}
+
+model Advertisement {
+  id           String   @id @default(cuid())
+  title        String
+  imageUrl     String
+  position     Int      @default(0) // 0: topo, 1: lateral esquerda, 2: lateral direita
+  isActive     Boolean  @default(true)
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  uploadedBy   Admin?   @relation(fields: [uploadedById], references: [id])
+  uploadedById String?
 }
