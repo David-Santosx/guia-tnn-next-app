@@ -26,32 +26,35 @@ async function getEvents(): Promise<Event[]> {
   return res.json();
 }
 
-// Componente de carregamento para eventos
-function EventsLoading() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
-        <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden">
-          <Skeleton className="h-48 w-full" />
-          <div className="p-4 space-y-3">
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <div className="pt-2 space-y-2">
-              <Skeleton className="h-4 w-1/2" />
-              <Skeleton className="h-4 w-2/3" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+// Função para classificar eventos por data
+function categorizeEvents(events: Event[]) {
+  const today = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(today.getDate() + 7);
+  
+  const pastEvents: Event[] = [];
+  const upcomingEvents: Event[] = [];
+  const futureEvents: Event[] = [];
+  
+  events.forEach(event => {
+    const eventDate = new Date(event.date);
+    
+    if (eventDate < today) {
+      pastEvents.push(event);
+    } else if (eventDate <= nextWeek) {
+      upcomingEvents.push(event);
+    } else {
+      futureEvents.push(event);
+    }
+  });
+  
+  return { pastEvents, upcomingEvents, futureEvents };
 }
 
 // Componente principal da página de eventos
 export default async function EventosPage() {
   const events = await getEvents();
+  const { pastEvents, upcomingEvents, futureEvents } = categorizeEvents(events);
   
   return (
     <main className="min-h-screen bg-gray-50 py-12">
@@ -77,16 +80,65 @@ export default async function EventosPage() {
         
         {/* Lista de Eventos */}
         <section>
-          <h2 className="text-2xl font-semibold text-brand-blue mb-6">
-            Próximos Eventos
-          </h2>
-          <Suspense fallback={<EventsLoading />}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
+          {upcomingEvents.length > 0 && (
+            <>
+              <h2 className="text-2xl font-semibold text-green-600 mb-6 flex items-center">
+                <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                Eventos Próximos (Próximos 7 dias)
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                {upcomingEvents.map((event) => (
+                  <EventCard 
+                    key={event.id} 
+                    event={event} 
+                    className="border-l-4 border-green-500 shadow-md hover:shadow-lg transition-shadow"
+                  />
+                ))}
+              </div>
+            </>
+          )}
+          
+          {futureEvents.length > 0 && (
+            <>
+              <h2 className="text-2xl font-semibold text-blue-600 mb-6 flex items-center">
+                <span className="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                Eventos Futuros
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                {futureEvents.map((event) => (
+                  <EventCard 
+                    key={event.id} 
+                    event={event} 
+                    className="border-l-4 border-blue-500 shadow-md hover:shadow-lg transition-shadow"
+                  />
+                ))}
+              </div>
+            </>
+          )}
+          
+          {pastEvents.length > 0 && (
+            <>
+              <h2 className="text-2xl font-semibold text-gray-600 mb-6 flex items-center">
+                <span className="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
+                Eventos Passados
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pastEvents.map((event) => (
+                  <EventCard 
+                    key={event.id} 
+                    event={event} 
+                    className="border-l-4 border-gray-400 shadow-md hover:shadow-lg transition-shadow opacity-75"
+                  />
+                ))}
+              </div>
+            </>
+          )}
+          
+          {events.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Nenhum evento encontrado.</p>
             </div>
-          </Suspense>
+          )}
         </section>
       </div>
     </main>
