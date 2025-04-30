@@ -118,10 +118,10 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <Credits variant="dark" />
           <div className="flex space-x-4">
-            <Link href="/termos" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link href="/legal/termos" className="text-gray-400 hover:text-white text-sm transition-colors">
               Termos de Uso
             </Link>
-            <Link href="/privacidade" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link href="/legal/privacidade" className="text-gray-400 hover:text-white text-sm transition-colors">
               Política de Privacidade
             </Link>
           </div>
