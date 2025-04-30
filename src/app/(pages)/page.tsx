@@ -124,11 +124,6 @@ export default function Page() {
     return anuncios.find((ad) => ad.position === position);
   };
 
-  // Função para gerar URL de placeholder
-  const getPlaceholderUrl = (width: number, height: number) => {
-    return `https://fakeimg.pl/${width}x${height}?text=ANUNCIE+AQUI`;
-  };
-
   const AboutSection = () => {
     return (
       <section className="py-16 bg-white">
@@ -139,17 +134,17 @@ export default function Page() {
               {anunciosLoading ? (
                 <div className="w-[250px] h-[600px] bg-gray-200 animate-pulse rounded-lg"></div>
               ) : (
-                <Advertisement
-                  src={
-                    getAnuncioByPosition(1)?.imageUrl || getPlaceholderUrl(250, 600)
-                  }
-                  alt={getAnuncioByPosition(1)?.title || "Anuncie aqui"}
-                  width={250}
-                  height={600}
-                  href="#"
-                  isActive={getAnuncioByPosition(1)?.isActive ?? true}
-                  id="anuncio-lateral-esquerdo"
-                />
+                getAnuncioByPosition(1) && (
+                  <Advertisement
+                    src={getAnuncioByPosition(1)?.imageUrl || ""}
+                    alt={getAnuncioByPosition(1)?.title || ""}
+                    width={250}
+                    height={600}
+                    href="#"
+                    isActive={getAnuncioByPosition(1)?.isActive ?? true}
+                    id="anuncio-lateral-esquerdo"
+                  />
+                )
               )}
             </div>
 
@@ -209,17 +204,17 @@ export default function Page() {
               {anunciosLoading ? (
                 <div className="w-[250px] h-[600px] bg-gray-200 animate-pulse rounded-lg"></div>
               ) : (
-                <Advertisement
-                  src={
-                    getAnuncioByPosition(2)?.imageUrl || getPlaceholderUrl(250, 600)
-                  }
-                  alt={getAnuncioByPosition(2)?.title || "Anuncie aqui"}
-                  width={250}
-                  height={600}
-                  href="#"
-                  isActive={getAnuncioByPosition(2)?.isActive ?? true}
-                  id="anuncio-lateral-direito"
-                />
+                getAnuncioByPosition(2) && (
+                  <Advertisement
+                    src={getAnuncioByPosition(2)?.imageUrl || ""}
+                    alt={getAnuncioByPosition(2)?.title || ""}
+                    width={250}
+                    height={600}
+                    href="#"
+                    isActive={getAnuncioByPosition(2)?.isActive ?? true}
+                    id="anuncio-lateral-direito"
+                  />
+                )
               )}
             </div>
           </div>
@@ -289,15 +284,17 @@ export default function Page() {
           {anunciosLoading ? (
             <div className="w-[728px] h-[90px] bg-gray-200 animate-pulse rounded-lg"></div>
           ) : (
-            <Advertisement
-              src={getAnuncioByPosition(0)?.imageUrl || getPlaceholderUrl(728, 90)}
-              alt={getAnuncioByPosition(0)?.title || "Anuncie aqui"}
-              width={728}
-              height={90}
-              href="#"
-              isActive={getAnuncioByPosition(0)?.isActive ?? true}
-              id="anuncio-topo"
-            />
+            getAnuncioByPosition(0) && (
+              <Advertisement
+                src={getAnuncioByPosition(0)?.imageUrl || ""}
+                alt={getAnuncioByPosition(0)?.title || ""}
+                width={728}
+                height={90}
+                href="#"
+                isActive={getAnuncioByPosition(0)?.isActive ?? true}
+                id="anuncio-topo"
+              />
+            )
           )}
         </div>
       </div>
