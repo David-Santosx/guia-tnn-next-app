@@ -44,7 +44,7 @@ export default function Header() {
   return (
     <>
       <div className="w-full h-2 bg-brand-orange fixed top-0 left-0 right-0 z-50"></div>
-      <header className="w-full py-2.5 px-6 md:px-8 lg:px-16 xl:px-24 flex items-center justify-between h-[5.25rem] fixed top-2 left-0 right-0 z-40 bg-white/80 backdrop-blur-md shadow-sm">
+      <header className="w-full py-2.5 px-6 md:px-8 lg:px-16 xl:px-24 flex items-center justify-between h-[5.25rem] fixed top-2 left-0 right-0 z-40 bg-white text-brand-blue backdrop-blur-md shadow-sm">
         <Link
           href="/"
           className="transition-transform duration-300 hover:scale-105"
