@@ -17,43 +17,27 @@ import {
 const historicalPhotos = [
   {
     id: 1,
-    title: "Primeiros colonizadores (1978)",
+    title: "Famílias gaúchas embarcadas (1978)",
     description:
-      "Famílias gaúchas chegando à região que viria a se tornar Terra Nova do Norte.",
-    imageUrl: "/images/historical/colonizadores.jpg",
-    alt: "Primeiros colonizadores chegando a Terra Nova do Norte",
+      "Famílias gaúchas embarcas em ônibus rumo à região que viria a se tornar Terra Nova do Norte.",
+    imageUrl: "/images/historical/frota-pioneiros.jpg",
+    alt: "Famílias gaúchas embarcadas em ônibus rumo à região que viria a se tornar Terra Nova do Norte.",
   },
   {
     id: 2,
-    title: "Construção da primeira igreja (1980)",
+    title: "Antigo terminal rodoviário (2008)",
     description:
-      "Moradores se reuniram para erguer a primeira igreja da comunidade.",
-    imageUrl: "/images/historical/igreja.jpg",
-    alt: "Construção da primeira igreja de Terra Nova do Norte",
+      "Antigo terminal rodoviário de Terra Nova do Norte em pleno funcionamento.",
+    imageUrl: "/images/historical/terminal-rodoviário.JPG",
+    alt: "Antigo terminal rodoviário de Terra Nova do Norte em funcionamento.",
   },
   {
     id: 3,
-    title: "Inauguração da Prefeitura (1986)",
+    title: "Igreja Matriz Paróquia Nossa Senhora Aparecida (2008)",
     description:
-      "Cerimônia de inauguração do prédio da prefeitura após emancipação do município.",
-    imageUrl: "/images/historical/prefeitura.jpg",
-    alt: "Inauguração da prefeitura de Terra Nova do Norte",
-  },
-  {
-    id: 4,
-    title: "Primeira Festa do Colono (1988)",
-    description:
-      "Celebração que se tornaria uma das principais festividades anuais do município.",
-    imageUrl: "/images/historical/festa-colono.jpg",
-    alt: "Primeira Festa do Colono em Terra Nova do Norte",
-  },
-  {
-    id: 5,
-    title: "Vista aérea (1990)",
-    description:
-      "Imagem aérea mostrando o desenvolvimento urbano inicial da cidade.",
-    imageUrl: "/images/historical/vista-aerea.jpg",
-    alt: "Vista aérea de Terra Nova do Norte em 1990",
+      "Igreja Católica ainda com sua famosa cor azulada, vista da Av. Norberto Schwantes.",
+    imageUrl: "/images/historical/igreja-matriz.jpg",
+    alt: "Igreja Católica ainda com sua famosa cor azulada, vista da Av. Norberto Schwantes.",
   },
 ];
 
