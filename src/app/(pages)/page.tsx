@@ -155,12 +155,14 @@ export default function Page() {
               </h2>
 
               <p className="text-gray-700 text-center mb-12 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                in dui mauris. Vivamus hendrerit arcu sed erat molestie
-                vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh
-                porttitor. Ut in nulla enim. Phasellus molestie magna non est
-                bibendum non venenatis nisl tempor. Suspendisse dictum feugiat
-                nisl ut dapibus.
+                Terra Nova do Norte, localizada no norte de Mato Grosso, é uma
+                cidade que encanta por sua história de colonização sulista e
+                pela exuberante natureza amazônica que a cerca. Fundada na
+                década de 1970, a cidade preserva suas raízes culturais através
+                de festas tradicionais, gastronomia típica e um povo acolhedor.
+                Com uma economia baseada na agricultura familiar e pecuária, o
+                município oferece qualidade de vida em meio a paisagens
+                deslumbrantes.
               </p>
 
               <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-12">
@@ -189,13 +191,15 @@ export default function Page() {
                 </div>
               </div>
 
-              <p className="text-gray-700 text-center leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a
-                diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula
-                ac quam viverra nec consectetur ante hendrerit. Donec et mollis
-                dolor. Praesent et diam eget libero egestas mattis sit amet
-                vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia
-                consectetur.
+              <p className="text-gray-700 text-center mb-12 leading-relaxed">
+                Além de suas belezas naturais, como cachoeiras cristalinas e
+                rios abundantes, Terra Nova do Norte se destaca por seu
+                calendário de eventos durante todo o ano. A tradicional Festa do
+                Colono, as competições esportivas e as feiras culturais
+                movimentam a economia local e proporcionam momentos de lazer e
+                integração para moradores e visitantes. Convidamos você a
+                explorar nosso guia e descobrir tudo o que nossa cidade tem a
+                oferecer!
               </p>
             </div>
 

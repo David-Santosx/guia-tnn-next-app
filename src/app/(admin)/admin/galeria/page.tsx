@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Plus, Trash2, Loader2, AlertCircle, ImageOff, Calendar, MapPin, User } from "lucide-react";
-import { AddPhotoModal } from '@/components/admin/gallery/add-photo-modal';
-import { DeletePhotoModal } from '@/components/admin/gallery/delete-photo-modal';
+import { AddPhotoModal } from '@/components/admin/galeria/add-photo-modal';
+import { DeletePhotoModal } from '@/components/admin/galeria/delete-photo-modal';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -34,7 +34,7 @@ export default function GalleryAdminPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/gallery");
+      const response = await fetch("/api/galeria");
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Falha ao buscar fotos da galeria");
@@ -71,7 +71,7 @@ export default function GalleryAdminPage() {
     
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/gallery/${selectedPhoto.id}`, {
+      const response = await fetch(`/api/galeria/${selectedPhoto.id}`, {
         method: 'DELETE',
       });
       

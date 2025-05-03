@@ -29,7 +29,7 @@ export default function Page() {
     const fetchPhotos = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("/api/gallery");
+        const response = await fetch("/api/galeria");
 
         if (!response.ok) {
           throw new Error("Failed to fetch photos");
