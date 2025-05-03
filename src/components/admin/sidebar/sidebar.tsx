@@ -9,7 +9,6 @@ import {
   Home,
   Calendar,
   Store,
-  FileText,
   LogOut,
   ImageIcon,
   Crown,
@@ -118,15 +117,6 @@ export function Sidebar() {
               icon={Megaphone}
               label="Anúncios"
               isActive={pathname.startsWith("/admin/anuncios")}
-            />
-          </SidebarSection>
-
-          <SidebarSection title="Conteúdo">
-            <SidebarItem
-              href="/admin/paginas"
-              icon={FileText}
-              label="Páginas"
-              isActive={pathname.startsWith("/admin/paginas")}
             />
             <SidebarItem
               href="/admin/galeria"
