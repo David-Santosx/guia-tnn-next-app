@@ -15,7 +15,7 @@ const HeroSection = () => {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="./brand/thumbnail.jpg"
+            src="/brand/thumbnail.jpg"
             alt="Terra Nova do Norte"
             fill
             quality={100}
@@ -168,7 +168,7 @@ export default function Page() {
               <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-12">
                 <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[-3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group">
                   <Image
-                    src="./brand/about-image-1.jpg"
+                    src="/brand/about-image-1.jpg"
                     alt="Natureza em Terra Nova do Norte "
                     fill
                     className="object-cover rounded-lg shadow-xl"
@@ -180,7 +180,7 @@ export default function Page() {
 
                 <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group">
                   <Image
-                    src="./brand/about-image-2.jpg"
+                    src="/brand/about-image-2.jpg"
                     alt="Vista da cidade de Terra Nova do Norte"
                     fill
                     className="object-cover rounded-lg shadow-xl"

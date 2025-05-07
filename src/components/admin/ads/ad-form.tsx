@@ -109,7 +109,9 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
       <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-lg border border-gray-700 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-white">Adicionar/Editar Anúncio</h2>
+          <h2 className="text-lg font-semibold text-white">
+            Adicionar/Editar Anúncio
+          </h2>
           <button onClick={onClose} className="text-gray-400 hover:text-white">
             <X size={20} />
           </button>
@@ -123,7 +125,10 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
           )}
 
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
               Título *
             </label>
             <input
@@ -156,8 +161,8 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
               Status
             </label>
             <select
-              value={isActive ? 'true' : 'false'}
-              onChange={(e) => setIsActive(e.target.value === 'true')}
+              value={isActive ? "true" : "false"}
+              onChange={(e) => setIsActive(e.target.value === "true")}
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
             >
               <option value="true">Ativo</option>
@@ -166,7 +171,10 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
           </div>
 
           <div>
-            <label htmlFor="startDate" className="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+            <label
+              htmlFor="startDate"
+              className="text-sm font-medium text-gray-300 mb-1 flex items-center"
+            >
               <Calendar className="w-4 h-4 mr-1.5 text-brand-orange" />
               Data de Início
             </label>
@@ -180,7 +188,10 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
           </div>
 
           <div>
-            <label htmlFor="endDate" className="block text-sm font-medium text-gray-300 mb-1 flex items-center">
+            <label
+              htmlFor="endDate"
+              className="text-sm font-medium text-gray-300 mb-1 flex items-center"
+            >
               <Calendar className="w-4 h-4 mr-1.5 text-brand-orange" />
               Data de Término
             </label>
@@ -200,7 +211,11 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
             {!imageUrl ? (
               <div
                 {...getRootProps()}
-                className={`flex justify-center rounded-lg border border-dashed border-gray-600 px-6 py-10 ${isDragActive ? 'border-brand-orange bg-brand-orange/5' : 'hover:border-gray-500 hover:bg-gray-700/30'} transition-colors duration-200`}
+                className={`flex justify-center rounded-lg border border-dashed border-gray-600 px-6 py-10 ${
+                  isDragActive
+                    ? "border-brand-orange bg-brand-orange/5"
+                    : "hover:border-gray-500 hover:bg-gray-700/30"
+                } transition-colors duration-200`}
               >
                 <div className="text-center self-center">
                   <input {...getInputProps()} />
@@ -211,10 +226,14 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
                   )}
                   <div className="mt-4 flex text-sm leading-6 text-gray-400">
                     <span className="relative cursor-pointer font-semibold text-brand-orange hover:text-brand-orange/80 transition-colors duration-200">
-                      {isDragActive ? 'Solte a imagem aqui' : 'Faça upload de uma imagem'}
+                      {isDragActive
+                        ? "Solte a imagem aqui"
+                        : "Faça upload de uma imagem"}
                     </span>
                   </div>
-                  <p className="text-xs leading-5 text-gray-500 mt-2">PNG, JPG, JPEG ou GIF</p>
+                  <p className="text-xs leading-5 text-gray-500 mt-2">
+                    PNG, JPG, JPEG ou GIF
+                  </p>
                   <ul className="text-xs leading-5 text-gray-500 mt-1 list-disc list-inside">
                     <li>Topo: 728 x 90 px</li>
                     <li>Lateral: 250 x 600 px</li>
@@ -233,11 +252,11 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
                 </div>
                 <div className="p-3 bg-gray-700 border-t border-gray-600">
                   <p className="text-xs text-gray-400 truncate mb-2">
-                    {imageUrl.split('/').pop()}
+                    {imageUrl.split("/").pop()}
                   </p>
                   <button
                     type="button"
-                    onClick={() => setImageUrl('')}
+                    onClick={() => setImageUrl("")}
                     className="w-full flex items-center justify-center py-1.5 px-3 bg-red-900/30 text-red-300 rounded hover:bg-red-900/50 transition-colors"
                   >
                     <X className="h-4 w-4 mr-1.5" />
@@ -262,7 +281,11 @@ export default function AdForm({ onSubmit, initialData, isSubmitting = false, on
               disabled={isSubmitting || isUploading}
               className="flex items-center justify-center gap-2 px-4 py-2 bg-brand-orange text-white rounded-md hover:bg-brand-orange/90 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : 'Salvar'}
+              {isSubmitting ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                "Salvar"
+              )}
             </button>
           </div>
         </form>
