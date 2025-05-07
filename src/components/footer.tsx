@@ -84,7 +84,7 @@ export default function Footer() {
           <div className="w-full md:w-1/4 mb-8 md:mb-0">
             <Link href="/" className="inline-block mb-4">
               <Image
-                src="/brand/guia-tnn-logo.svg"
+                src="./brand/guia-tnn-logo.svg"
                 width={180}
                 height={56}
                 alt="Logo GUIA TNN"
@@ -94,10 +94,10 @@ export default function Footer() {
             <p className="text-gray-300 text-sm">
               Seu guia completo sobre Terra Nova do Norte, Mato Grosso.
             </p>
-            
+
             {/* Dashboard link */}
-            <Link 
-              href="/admin" 
+            <Link
+              href="/admin"
               className="mt-4 inline-flex items-center text-gray-300 hover:text-white transition-colors"
               aria-label="Painel administrativo"
             >
@@ -105,23 +105,29 @@ export default function Footer() {
               <span className="text-sm">Dashboard</span>
             </Link>
           </div>
-          
+
           {/* Footer sections */}
           {footerSections.map((section, index) => (
             <FooterSection key={index} section={section} />
           ))}
         </div>
       </div>
-      
+
       {/* Copyright bar */}
       <div className="border-t border-gray-700 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <Credits variant="dark" />
           <div className="flex space-x-4">
-            <Link href="/legal/termos" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link
+              href="/legal/termos"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Termos de Uso
             </Link>
-            <Link href="/legal/privacidade" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link
+              href="/legal/privacidade"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Política de Privacidade
             </Link>
           </div>

@@ -5,7 +5,7 @@ import { uploadCommerceImage } from '@/lib/supabase/commerce-storage';
 
 const prisma = new PrismaClient();
 
-// Schema para validação de criação/atualização de comércio
+
 const commerceSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
   description: z.string().optional().nullable(),
@@ -18,7 +18,7 @@ const commerceSchema = z.object({
   uploadedById: z.string().optional().nullable(),
 });
 
-// GET - Listar todos os comércios
+
 export async function GET() {
   try {
     const commerces = await prisma.commerce.findMany({
@@ -32,15 +32,15 @@ export async function GET() {
   }
 }
 
-// POST - Criar um novo comércio
+
 export async function POST(request: Request) {
   try {
-    // Verificar o tipo de conteúdo
+
     const contentType = request.headers.get('content-type');
     
     let data;
     if (contentType?.includes('application/json')) {
-      // Processar JSON
+
       data = await request.json();
       
       const { name, description, phone, rate, owner, hours, imageUrl, location, uploadedById } = data;
@@ -153,7 +153,7 @@ export async function POST(request: Request) {
   }
 }
 
-// PUT - Atualizar um comércio existente
+
 export async function PUT(request: Request) {
   try {
     const formData = await request.formData();
@@ -180,12 +180,12 @@ export async function PUT(request: Request) {
 
     let imageUrl = existingCommerce.imageUrl;
 
-    // Se uma nova imagem foi enviada, fazer upload
+
     if (image && image.size > 0) {
       imageUrl = await uploadCommerceImage(image);
     }
 
-    // Atualizar o comércio
+
     const updatedCommerce = await prisma.commerce.update({
       where: { id },
       data: {

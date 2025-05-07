@@ -97,7 +97,7 @@ export default function Page() {
         <div className="relative z-10 flex flex-col items-center justify-center space-y-8 px-8">
           <div className="bg-white p-4 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
             <Image
-              src="/brand/guia-tnn-logo.svg"
+              src="./brand/guia-tnn-logo.svg"
               width={300}
               height={100}
               alt="Logo GUIA TNN"
@@ -124,7 +124,7 @@ export default function Page() {
           <div className="text-center">
             <div className="md:hidden flex justify-center mb-6">
               <Image
-                src="/brand/guia-tnn-logo.svg"
+                src="./brand/guia-tnn-logo.svg"
                 width={180}
                 height={56}
                 alt="Logo GUIA TNN"

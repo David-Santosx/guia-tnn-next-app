@@ -50,7 +50,7 @@ export default function Header() {
           className="transition-transform duration-300 hover:scale-105"
         >
           <Image
-            src="/brand/guia-tnn-logo.svg"
+            src="./brand/guia-tnn-logo.svg"
             width={200}
             height={63}
             alt="Logo GUIA TNN"
