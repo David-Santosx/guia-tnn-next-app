@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { getEventById } from '@/app/actions/events';
+import { ResolvingMetadata } from 'next';
 
 // Função para gerar metadados dinâmicos com base no ID do evento
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: { id: string } 
-}): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: { params: { id: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const id = params.id;
   const event = await getEventById(id);
   
@@ -25,16 +26,19 @@ export async function generateMetadata({
 
   return {
     title: `${event.title} | Evento em ${event.location} | Guia TNN`,
-    description: `${event.description.substring(0, 160)}... Evento em ${event.location} no dia ${formattedDate} às ${event.time}.`,
+    description: `${event.description.substring(0, 160)}... Evento em ${
+      event.location
+    } no dia ${formattedDate} às ${event.time}.`,
     keywords: `${event.title}, eventos Terra Nova do Norte, ${event.location}, ${formattedDate}`,
     openGraph: {
-      // Using 'article' type since 'event' is not a valid OpenGraph type
-      type: 'article',
-      locale: 'pt_BR',
+      type: "article",
+      locale: "pt_BR",
       url: `https://guiatnn.com.br/eventos/`,
       title: `${event.title} | Evento em ${event.location} | Guia TNN`,
-      description: `${event.description.substring(0, 160)}... Evento em ${event.location} no dia ${formattedDate} às ${event.time}.`,
-      siteName: 'Guia TNN',
+      description: `${event.description.substring(0, 160)}... Evento em ${
+        event.location
+      } no dia ${formattedDate} às ${event.time}.`,
+      siteName: "Guia TNN",
       images: [
         {
           url: event.imageUrl,
