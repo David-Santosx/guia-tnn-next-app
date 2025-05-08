@@ -4,11 +4,12 @@ import { ResolvingMetadata } from 'next';
 
 interface GenerateMetadataProps {
   params: Promise<{ id?: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 // Função para gerar metadados dinâmicos com base no ID do evento
 export async function generateMetadata(
-  { params }: GenerateMetadataProps,
+  { params, searchParams }: GenerateMetadataProps,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
