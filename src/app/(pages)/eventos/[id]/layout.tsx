@@ -2,13 +2,18 @@ import type { Metadata } from 'next';
 import { getEventById } from '@/app/actions/events';
 import { ResolvingMetadata } from 'next';
 
+interface GenerateMetadataProps {
+  params: { id: string };
+  searchParams: Record<string, string | string[] | undefined>;
+}
+
 // Função para gerar metadados dinâmicos com base no ID do evento
 export async function generateMetadata(
-  props: { params: { id: string } },
+  { params }: GenerateMetadataProps,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = props.params.id;
+  const id = params.id;
   const event = await getEventById(id);
   
   if (!event) {
