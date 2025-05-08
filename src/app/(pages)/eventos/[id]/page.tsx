@@ -8,9 +8,12 @@ import { Event } from "@/types/event";
 
 async function getEventById(id: string): Promise<Event | null> {
   try {
-    const res = await fetch("http://localhost:3000/api/eventos/" + id, {
-      next: { revalidate: 0 },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/eventos/${id}`,
+      {
+        next: { revalidate: 0 },
+      }
+    );
     if (!res.ok) return null;
     const event = await res.json();
     console.log(event.createdBy);

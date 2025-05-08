@@ -111,7 +111,7 @@ export async function updateEvent(formData: FormData) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getEventById(id: string): Promise<any | null> {
   try {
-    const res = await fetch("http://localhost:3000/api/eventos/" + id, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/eventos/${id}`, {
       next: { revalidate: 0 },
     });
     if (!res.ok) return null;
