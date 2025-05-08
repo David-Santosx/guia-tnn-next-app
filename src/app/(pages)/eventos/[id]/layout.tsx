@@ -4,11 +4,11 @@ import { ResolvingMetadata } from 'next';
 
 // Função para gerar metadados dinâmicos com base no ID do evento
 export async function generateMetadata(
-  { params }: { params: { id: string } },
+  props: { params: { id: string } },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.id;
+  const id = props.params.id;
   const event = await getEventById(id);
   
   if (!event) {
