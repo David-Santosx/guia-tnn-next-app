@@ -23,13 +23,12 @@ async function getEventById(id: string): Promise<Event | null> {
   }
 }
 
+// Define o tipo para os parâmetros da página
+type PageParams = Promise<{ id: string }>
+
 // Componente principal da página de detalhes do evento
-export default async function EventoDetalhePage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const event = await getEventById(params.id);
+export default async function EventoDetalhePage(props: { params: PageParams}) {
+  const event = await getEventById((await props.params).id);
 
   // Se o evento não for encontrado, retorna 404
   if (!event) {
