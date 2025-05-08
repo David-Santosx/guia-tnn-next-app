@@ -3,25 +3,23 @@ import { getEventById } from '@/app/actions/events';
 import { ResolvingMetadata } from 'next';
 
 interface GenerateMetadataProps {
-  params: Promise<{ id?: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 // Função para gerar metadados dinâmicos com base no ID do evento
 export async function generateMetadata(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  { params, searchParams }: GenerateMetadataProps,
+  { params }: GenerateMetadataProps,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { id } = await params;
-  if (!id) return { title: "Evento não encontrado | Guia TNN" };
+  const id = params.id;
   const event = await getEventById(id);
-
+  
   if (!event) {
     return {
-      title: "Evento não encontrado | Guia TNN",
-      description: "O evento solicitado não foi encontrado no Guia TNN.",
+      title: 'Evento não encontrado | Guia TNN',
+      description: 'O evento solicitado não foi encontrado no Guia TNN.',
     };
   }
 
