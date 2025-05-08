@@ -9,6 +9,7 @@ interface GenerateMetadataProps {
 
 // Função para gerar metadados dinâmicos com base no ID do evento
 export async function generateMetadata(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   { params, searchParams }: GenerateMetadataProps,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   parent: ResolvingMetadata
