@@ -1,45 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { supabaseAdmin } from '../upload/route';
-
-export async function deleteGalleryImage(imageUrl: string): Promise<boolean> {
-  try {
-    const url = new URL(imageUrl);
-    const pathSegments = url.pathname.split('/');
-    const bucketNameIndex = pathSegments.findIndex(segment => segment === "gallery-photos");
-
-    if (bucketNameIndex === -1 || bucketNameIndex + 1 >= pathSegments.length) {
-      console.error("Could not extract file path from URL:", imageUrl);
-      return false;
-    }
-
-    const filePath = pathSegments.slice(bucketNameIndex + 1).join('/');
-
-    // Use admin client for deletion to bypass RLS
-    const { error } = await supabaseAdmin.storage
-      .from("gallery-photos")
-      .remove([filePath]);
-
-    if (error) {
-      console.error('Supabase delete error:', error);
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    console.error("Error deleting image:", error);
-    return false;
-  }
-}
+import { deleteGalleryImage } from '@/lib/supabase/gallery-storage';
 
 const prisma = new PrismaClient();
-type RouteParams = Promise<{ id: string }>
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET handler para buscar uma foto específica
-export async function GET(request: NextRequest, props: { params: RouteParams, searchParams: SearchParams }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const id = (await props.params).id;
+    const id = params.id;
 
     if (!id) {
       return NextResponse.json(
@@ -74,10 +45,10 @@ export async function GET(request: NextRequest, props: { params: RouteParams, se
 // DELETE handler para excluir uma foto
 export async function DELETE(
   request: NextRequest,
-  props: {params: RouteParams, searchParams: SearchParams}
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = (await props.params).id;
+    const id = params.id;
 
     if (!id) {
       return NextResponse.json(
