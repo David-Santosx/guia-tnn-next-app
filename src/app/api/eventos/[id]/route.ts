@@ -3,13 +3,12 @@ import { PrismaClient } from '@prisma/client';
 import { deleteEventImage, uploadEventImage } from '@/lib/supabase/events-storage';
 
 const prisma = new PrismaClient();
+type RouteParams = Promise<{ id: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(props: {params: RouteParams, searchParams: SearchParams}) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
 
     if (!id) {
       return NextResponse.json({ error: 'ID do evento não fornecido' }, { status: 400 });
@@ -35,10 +34,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  props: {params: RouteParams, searchParams: SearchParams}
 ) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
     
     if (!id) {
       return NextResponse.json({ error: 'ID do evento não fornecido' }, { status: 400 });
@@ -89,12 +88,9 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(props: {params: RouteParams, searchParams: SearchParams}) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
     
     if (!id) {
       return NextResponse.json({ error: 'ID do evento não fornecido' }, { status: 400 });

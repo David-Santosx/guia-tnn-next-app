@@ -33,14 +33,13 @@ export async function deleteGalleryImage(imageUrl: string): Promise<boolean> {
 }
 
 const prisma = new PrismaClient();
+type RouteParams = Promise<{ id: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET handler para buscar uma foto específica
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(props: { params: RouteParams, searchParams: SearchParams }) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
 
     if (!id) {
       return NextResponse.json(
@@ -75,10 +74,10 @@ export async function GET(
 // DELETE handler para excluir uma foto
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  props: {params: RouteParams, searchParams: SearchParams}
 ) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
 
     if (!id) {
       return NextResponse.json(

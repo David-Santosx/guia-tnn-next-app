@@ -3,14 +3,13 @@ import { PrismaClient } from '@prisma/client';
 import { deleteCommerceImage } from '@/lib/supabase/commerce-storage';
 
 const prisma = new PrismaClient();
+type RouteParams = Promise<{ id: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET - Buscar um comércio específico
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(props: {params: RouteParams, searchParams: SearchParams}) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
     
     if (!id) {
       return NextResponse.json(
@@ -41,12 +40,9 @@ export async function GET(
 }
 
 // PUT - Atualizar um comércio específico
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(props: {params: RouteParams, searchParams: SearchParams}, request: NextRequest) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
     const body = await request.json();
     
     const { name, description, phone, rate, owner, hours, imageUrl, location } = body;
@@ -108,12 +104,9 @@ export async function PUT(
 }
 
 // DELETE - Excluir um comércio específico
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(props: {params: RouteParams, searchParams: SearchParams}) {
   try {
-    const id = params.id;
+    const id = (await props.params).id;
     
     if (!id) {
       return NextResponse.json(
