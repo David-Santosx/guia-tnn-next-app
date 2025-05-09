@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Settings, Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Settings, Mail, Phone, MapPin } from "lucide-react";
 import { Credits } from "@/components/credits";
 
 interface FooterLink {
@@ -18,11 +18,11 @@ interface FooterSection {
 
 const FooterLink = ({ link }: { link: FooterLink }) => {
   const Icon = link.icon;
-  
+
   return (
     <li className="mb-2">
-      <Link 
-        href={link.href} 
+      <Link
+        href={link.href}
         className="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
       >
         {Icon && <Icon size={16} />}
@@ -46,7 +46,6 @@ const FooterSection = ({ section }: { section: FooterSection }) => {
 };
 
 export default function Footer() {
-  
   const footerSections: FooterSection[] = [
     {
       title: "Navegação",
@@ -55,23 +54,19 @@ export default function Footer() {
         { text: "Galeria de Fotos", href: "/galeria" },
         { text: "Eventos", href: "/eventos" },
         { text: "Comércio Local", href: "/comercio" },
-      ]
+      ],
     },
     {
       title: "Contato",
       links: [
-        { text: "contato@guiatnn.com.br", href: "mailto:contato@guiatnn.com.br", icon: Mail },
-        { text: "(66) 9999-9999", href: "tel:+556699999999", icon: Phone },
-        { text: "Terra Nova do Norte, MT", href: "/localizacao", icon: MapPin },
-      ]
-    },
-    {
-      title: "Redes Sociais",
-      links: [
-        { text: "Facebook", href: "https://facebook.com", icon: Facebook },
-        { text: "Instagram", href: "https://instagram.com", icon: Instagram },
-        { text: "Twitter", href: "https://twitter.com", icon: Twitter },
-      ]
+        {
+          text: "willians.sant@proton.me",
+          href: "mailto:willians.sant@proton.me",
+          icon: Mail,
+        },
+        { text: "(66) 99911-8905", href: "tel:+5566999118905", icon: Phone },
+        { text: "Terra Nova do Norte, MT", href: "", icon: MapPin },
+      ],
     },
   ];
 
