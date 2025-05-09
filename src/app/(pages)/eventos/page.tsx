@@ -21,9 +21,22 @@ interface Event {
 
 // Função para buscar eventos (simulada por enquanto)
 async function getEvents(): Promise<Event[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/eventos`); // Removed cache: 'no-store'
-  if (!res.ok) throw new Error("Erro ao buscar eventos");
-  return res.json();
+  try {
+    // Use direct database access or internal API path
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/eventos`, {
+      cache: 'no-store'
+    });
+    
+    if (!res.ok) {
+      console.error("Failed to fetch events:", res.status, res.statusText);
+      return []; // Return empty array instead of throwing
+    }
+    
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return []; // Return empty array on error
+  }
 }
 
 // Função para classificar eventos por data
