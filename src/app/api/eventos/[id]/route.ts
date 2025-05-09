@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 type RouteParams = Promise<{ id: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
-export async function GET(props: {params: RouteParams, searchParams: SearchParams}) {
+export async function GET(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
   try {
     const id = (await props.params).id;
 
@@ -88,7 +88,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(props: {params: RouteParams, searchParams: SearchParams}) {
+export async function DELETE(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
   try {
     const id = (await props.params).id;
     

@@ -7,7 +7,7 @@ type RouteParams = Promise<{ id: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET - Buscar um anúncio específico
-export async function GET(props: {params: RouteParams, searchParams: SearchParams}) {
+export async function GET(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
   try {
     const id = (await props.params).id;
     
@@ -40,7 +40,7 @@ export async function GET(props: {params: RouteParams, searchParams: SearchParam
 }
 
 // PUT - Atualizar um anúncio
-export async function PUT(props: {params: RouteParams, searchParams: SearchParams}, request: NextRequest) {
+export async function PUT(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
   try {
     const id = (await props.params).id;
     const body = await request.json();
@@ -88,7 +88,7 @@ export async function PUT(props: {params: RouteParams, searchParams: SearchParam
 }
 
 // DELETE - Excluir um anúncio
-export async function DELETE(props: {params: RouteParams, searchParams: SearchParams}) {
+export async function DELETE(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
   try {
     const id = (await props.params).id;
     
