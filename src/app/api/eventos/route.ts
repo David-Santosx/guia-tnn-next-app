@@ -1,53 +1,60 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { uploadEventImage, deleteEventImage } from '@/lib/supabase/events-storage';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (id) {
+      const event = await prisma.event.findUnique({
+        where: { id }
+      });
+      
+      if (!event) {
+        return NextResponse.json({ error: 'Evento não encontrado' }, { status: 404 });
+      }
+      
+      return NextResponse.json(event);
+    }
+    
     const events = await prisma.event.findMany({
       orderBy: { date: 'desc' }
     });
+    
     return NextResponse.json(events);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.error('Erro ao buscar eventos:', error);
     return NextResponse.json({ error: 'Erro ao buscar eventos' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-    const organization = formData.get('organization') as string;
-    const date = formData.get('date') as string;
-    const time = formData.get('time') as string;
-    const location = formData.get('location') as string;
-    const image = formData.get('image') as File;
-    const createdById = formData.get('createdById') as string;
-
-    if (!title || !description || !organization || !date || !time || !location || !image || !createdById) {
+    const body = await request.json();
+    const { title, description, organization, date, time, location, imageUrl, createdById } = body;
+    
+    if (!title || !description || !organization || !date || !location || !imageUrl || !createdById) {
       return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 });
     }
-
-    const imageUrl = await uploadEventImage(image);
-
+    
     const event = await prisma.event.create({
       data: {
         title,
         description,
         organization,
         date: new Date(date),
-        time,
+        time: time || null,
         location,
         imageUrl,
         createdById
       }
     });
-
-    return NextResponse.json(event);
+    
+    return NextResponse.json(event, { status: 201 });
   } catch (error) {
     console.error('Erro ao criar evento:', error);
     return NextResponse.json({
