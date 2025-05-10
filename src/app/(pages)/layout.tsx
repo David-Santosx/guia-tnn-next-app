@@ -1,8 +1,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import type { Metadata } from "next";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guiatnn.com.br"),
