@@ -7,7 +7,8 @@ export function middleware(request: NextRequest) {
     const allowedOrigin = process.env.NEXT_PUBLIC_URL || '';
     
     // Verificar se a origem da requisição é permitida
-    if (origin && origin !== allowedOrigin) {
+    // Permitir requisições sem origem (como do Postman) em ambiente de desenvolvimento
+    if (origin && origin !== allowedOrigin && process.env.NODE_ENV === 'production') {
       return new NextResponse(null, {
         status: 403,
         statusText: 'Forbidden',
@@ -17,10 +18,10 @@ export function middleware(request: NextRequest) {
       });
     }
     
-    // Permitir a requisição se a origem for válida
+    // Permitir a requisição se a origem for válida ou não existir
     return NextResponse.next({
       headers: {
-        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Origin': origin || '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Max-Age': '86400',
