@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { CalendarIcon, ClockIcon, MapPinIcon } from "lucide-react";
+import Link from "next/link";
 
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -80,10 +81,11 @@ export default function EventsCarousel({
           (index - activeIndex + events.length) % events.length;
 
         return (
-          <div
+          <Link
             key={event.id}
+            href={`/eventos/${event.id}`}
             className={`absolute w-full max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden 
-              transition-all duration-500 ease-in-out
+              transition-all duration-500 ease-in-out cursor-pointer hover:shadow-xl
               ${
                 displayIndex === 0
                   ? "top-0 left-0 right-0 z-30 scale-100 opacity-100"
@@ -128,7 +130,7 @@ export default function EventsCarousel({
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>

@@ -53,7 +53,7 @@ const HeroSection = () => {
               className="bg-brand-orange text-white font-medium py-3 px-6 rounded-md shadow-md flex items-center justify-center item-hover"
             >
               <MegaphoneIcon className="w-5 h-5 mr-2" />
-              Próximos eventos
+              Eventos e Festas
             </Link>
             <Link
               href="/galeria"
@@ -285,7 +285,7 @@ export default function Page() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6 md:px-12">
           <h2 className="text-3xl font-bold text-brand-blue text-center mb-4">
-            Próximos Eventos
+            Eventos e Festas
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
             Confira os eventos que estão acontecendo em Terra Nova do Norte.
