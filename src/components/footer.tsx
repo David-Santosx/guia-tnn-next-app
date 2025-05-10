@@ -108,9 +108,6 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <div className="flex flex-col md:flex-row items-center gap-2">
             <Credits variant="dark" />
-            <span className="text-gray-400 text-sm">
-              CNPJ: 60.742.446/0001-13
-            </span>
           </div>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <Link
