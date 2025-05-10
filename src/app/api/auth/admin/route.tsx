@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const adminSecret = url.searchParams.get("adminSecret");
 
-    if (adminSecret !== process.env.NEXT_PUBLIC_ADMIN_SECRET_KEY) {
+    if (adminSecret !== process.env.ADMIN_SECRET_KEY) {
       return new Response(JSON.stringify({ error: "Não autorizado" }), {
         status: 401,
       });
