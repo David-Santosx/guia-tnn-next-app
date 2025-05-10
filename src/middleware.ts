@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
+
   // Proteção para rotas administrativas
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (request.nextUrl.pathname.startsWith('/auth/login')) {
@@ -26,5 +27,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/:path*'],
+  matcher: ['/admin/:path*'],
 };

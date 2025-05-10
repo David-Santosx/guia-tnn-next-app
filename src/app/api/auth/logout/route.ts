@@ -12,7 +12,17 @@ export async function GET(req: NextRequest) {
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 0,
-  });
+        });
+  
+        (await
+          cookieStore).set({
+      name: 'user_data',
+      value: '',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 0,
+    });
 
   const loginUrl = new URL('/admin/auth/login', req.url);
   return NextResponse.redirect(loginUrl);
