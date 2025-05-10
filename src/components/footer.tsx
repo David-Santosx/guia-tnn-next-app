@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Settings, Mail, Phone, MapPin } from "lucide-react";
+import { Settings, Mail, Phone, MapPin, Building2 } from "lucide-react";
 import { Credits } from "@/components/credits";
 
 interface FooterLink {
@@ -66,6 +66,11 @@ export default function Footer() {
         },
         { text: "(66) 99911-8905", href: "tel:+5566999118905", icon: Phone },
         { text: "Terra Nova do Norte, MT", href: "", icon: MapPin },
+        { 
+          text: "CNPJ: 60.742.446/0001-13", 
+          href: "", 
+          icon: Building2 
+        },
       ],
     },
   ];
@@ -101,8 +106,13 @@ export default function Footer() {
       {/* Copyright bar */}
       <div className="border-t border-gray-700 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-          <Credits variant="dark" />
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col md:flex-row items-center gap-2">
+            <Credits variant="dark" />
+            <span className="text-gray-400 text-sm">
+              CNPJ: 60.742.446/0001-13
+            </span>
+          </div>
+          <div className="flex items-center space-x-4 mt-4 md:mt-0">
             <Link
               href="/legal/termos"
               className="text-gray-400 hover:text-white text-sm transition-colors"
