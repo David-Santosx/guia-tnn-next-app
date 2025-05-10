@@ -2,23 +2,24 @@
 
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from "react";
 
 interface AdvertisementProps {
-  src: string;
-  alt: string;
+  src: string | string[];
+  alt: string | string[];
   width?: number;
   height?: number;
   priority?: boolean;
   className?: string;
   containerClassName?: string;
-  href?: string;
-  position?: 'fixed' | 'relative' | 'absolute';
+  href?: string | string[];
+  position?: "fixed" | "relative" | "absolute";
   onClick?: () => void;
-  imageType?: 'gif' | 'jpg' | 'jpeg' | 'png';
+  imageType?: "gif" | "jpg" | "jpeg" | "png";
   isActive?: boolean;
   startDate?: Date;
   endDate?: Date;
-  id?: string;
+  id?: string | string[];
 }
 
 export function Advertisement({
@@ -30,37 +31,80 @@ export function Advertisement({
   className,
   containerClassName,
   href,
-  position = 'relative',
+  position = "relative",
   onClick,
   isActive = true,
   startDate,
   endDate,
   id,
 }: AdvertisementProps) {
-  if (!isActive) return null;
+  // Estado para controlar qual anúncio está sendo exibido
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isValid, setIsValid] = useState(true);
 
-  if (startDate && endDate) {
-    const now = new Date();
-    if (now < startDate || now > endDate) return null;
-  }
+  // Converter entradas únicas em arrays para tratamento uniforme
+  const sources = Array.isArray(src) ? src : [src];
+  const alts = Array.isArray(alt) ? alt : Array(sources.length).fill(alt);
+  const hrefs = Array.isArray(href) ? href : Array(sources.length).fill(href);
+  const ids = Array.isArray(id) ? id : Array(sources.length).fill(id);
+
+  // Verificar se o anúncio está dentro do período de validade
+  useEffect(() => {
+    if (startDate || endDate) {
+      const now = new Date();
+      if (startDate && now < startDate) {
+        setIsValid(false);
+        return;
+      }
+      if (endDate && now > endDate) {
+        setIsValid(false);
+        return;
+      }
+    }
+    setIsValid(true);
+  }, [startDate, endDate]);
+
+  // Configurar rotação de anúncios se houver mais de um
+  useEffect(() => {
+    if (sources.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % sources.length);
+    }, 8000); // Alternar a cada 8 segundos
+
+    return () => clearInterval(interval);
+  }, [sources.length]);
+
+  // Se não estiver ativo ou não for válido, não renderizar nada
+  if (!isActive || !isValid || sources.length === 0 || !sources[0]) return null;
+
+  const currentSrc = sources[currentIndex];
+  const currentAlt = alts[currentIndex];
+  const currentHref = hrefs[currentIndex];
+  const currentId = ids[currentIndex];
 
   const imageComponent = (
     <div
       className={cn(
-        'overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300',
-        position === 'fixed' && 'fixed z-50',
+        "overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 relative",
+        position === "fixed" && "fixed z-50",
         containerClassName
       )}
-      data-ad-id={id}
+      data-ad-id={currentId}
     >
+      {/* Indicador de publicidade */}
+      <div className="absolute top-0 left-0 bg-black/40 text-white text-[8px] px-2 py-1 z-10 rounded-br-md">
+        Publicidade
+      </div>
+
       <Image
-        src={src}
-        alt={alt}
+        src={currentSrc}
+        alt={currentAlt}
         width={width}
         height={height}
         priority={priority}
         className={cn(
-          'w-full h-full object-cover hover:scale-105 transition-transform duration-300',
+          "w-full h-full object-cover hover:scale-105 transition-transform duration-300",
           className
         )}
         onClick={onClick}
@@ -68,14 +112,14 @@ export function Advertisement({
     </div>
   );
 
-  if (href) {
+  if (currentHref) {
     return (
       <a
-        href={href}
+        href={currentHref}
         target="_blank"
         rel="noopener noreferrer"
         className="block"
-        data-ad-id={id}
+        data-ad-id={currentId}
       >
         {imageComponent}
       </a>

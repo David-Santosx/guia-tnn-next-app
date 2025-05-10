@@ -119,9 +119,31 @@ export default function Page() {
       .finally(() => setEventsLoading(false));
   }, []);
 
-  // Função para obter anúncio por posição
-  const getAnuncioByPosition = (position: number) => {
-    return anuncios.find((ad) => ad.position === position);
+  // Função para obter anúncios por posição
+  const getAnunciosByPosition = (position: number) => {
+    // Filtra anúncios ativos pela posição
+    const filteredAds = anuncios.filter((ad) => ad.position === position && ad.isActive);
+    
+    // Verifica se há anúncios e se estão dentro do período de validade
+    if (filteredAds.length === 0) return null;
+    
+    // Filtra anúncios que estão dentro do período de validade
+    const validAds = filteredAds.filter(ad => {
+      const now = new Date();
+      const startDate = ad.startDate ? new Date(ad.startDate) : null;
+      const endDate = ad.endDate ? new Date(ad.endDate) : null;
+      
+      // Se não tiver datas definidas, é válido
+      if (!startDate && !endDate) return true;
+      
+      // Verifica se está dentro do período
+      if (startDate && now < startDate) return false;
+      if (endDate && now > endDate) return false;
+      
+      return true;
+    });
+    
+    return validAds.length > 0 ? validAds : null;
   };
 
   const AboutSection = () => {
@@ -134,14 +156,16 @@ export default function Page() {
               {anunciosLoading ? (
                 <div className="w-[250px] h-[600px] bg-gray-200 animate-pulse rounded-lg"></div>
               ) : (
-                getAnuncioByPosition(1) && (
+                getAnunciosByPosition(1) && (
                   <Advertisement
-                    src={getAnuncioByPosition(1)?.imageUrl || ""}
-                    alt={getAnuncioByPosition(1)?.title || ""}
+                    src={getAnunciosByPosition(1)?.map(ad => ad.imageUrl) || []}
+                    alt={getAnunciosByPosition(1)?.map(ad => ad.title) || []}
                     width={250}
                     height={600}
                     href="#"
-                    isActive={getAnuncioByPosition(1)?.isActive ?? true}
+                    startDate={getAnunciosByPosition(1)?.[0]?.startDate ? new Date(getAnunciosByPosition(1)![0].startDate) : undefined}
+                    endDate={getAnunciosByPosition(1)?.[0]?.endDate ? new Date(getAnunciosByPosition(1)![0].endDate) : undefined}
+                    isActive={true}
                     id="anuncio-lateral-esquerdo"
                   />
                 )
@@ -208,14 +232,16 @@ export default function Page() {
               {anunciosLoading ? (
                 <div className="w-[250px] h-[600px] bg-gray-200 animate-pulse rounded-lg"></div>
               ) : (
-                getAnuncioByPosition(2) && (
+                getAnunciosByPosition(2) && (
                   <Advertisement
-                    src={getAnuncioByPosition(2)?.imageUrl || ""}
-                    alt={getAnuncioByPosition(2)?.title || ""}
+                    src={getAnunciosByPosition(2)?.map(ad => ad.imageUrl) || []}
+                    alt={getAnunciosByPosition(2)?.map(ad => ad.title) || []}
                     width={250}
                     height={600}
                     href="#"
-                    isActive={getAnuncioByPosition(2)?.isActive ?? true}
+                    startDate={getAnunciosByPosition(2)?.[0]?.startDate ? new Date(getAnunciosByPosition(2)![0].startDate) : undefined}
+                    endDate={getAnunciosByPosition(2)?.[0]?.endDate ? new Date(getAnunciosByPosition(2)![0].endDate) : undefined}
+                    isActive={true}
                     id="anuncio-lateral-direito"
                   />
                 )
@@ -288,14 +314,16 @@ export default function Page() {
           {anunciosLoading ? (
             <div className="w-[728px] h-[90px] bg-gray-200 animate-pulse rounded-lg"></div>
           ) : (
-            getAnuncioByPosition(0) && (
+            getAnunciosByPosition(0) && (
               <Advertisement
-                src={getAnuncioByPosition(0)?.imageUrl || ""}
-                alt={getAnuncioByPosition(0)?.title || ""}
+                src={getAnunciosByPosition(0)?.map(ad => ad.imageUrl) || []}
+                alt={getAnunciosByPosition(0)?.map(ad => ad.title) || []}
                 width={728}
                 height={90}
                 href="#"
-                isActive={getAnuncioByPosition(0)?.isActive ?? true}
+                startDate={getAnunciosByPosition(0)?.[0]?.startDate ? new Date(getAnunciosByPosition(0)![0].startDate) : undefined}
+                endDate={getAnunciosByPosition(0)?.[0]?.endDate ? new Date(getAnunciosByPosition(0)![0].endDate) : undefined}
+                isActive={true}
                 id="anuncio-topo"
               />
             )
