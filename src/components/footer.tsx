@@ -60,8 +60,8 @@ export default function Footer() {
       title: "Contato",
       links: [
         {
-          text: "willians.sant@proton.me",
-          href: "mailto:willians.sant@proton.me",
+          text: "guiatnn@hotmail.com",
+          href: "mailto:guiatnn@hotmail.com",
           icon: Mail,
         },
         { text: "(66) 99911-8905", href: "tel:+5566999118905", icon: Phone },
@@ -74,14 +74,14 @@ export default function Footer() {
     <footer className="bg-brand-blue text-white">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row md:justify-between">
           {/* Logo and description */}
           <div className="w-full md:w-1/4 mb-8 md:mb-0">
             <Link href="/" className="inline-block mb-4">
               <Image
                 src="./brand/guia-tnn-logo.svg"
-                width={180}
-                height={56}
+                width={280}
+                height={76}
                 alt="Logo GUIA TNN"
                 className="w-36 md:w-40 bg-white px-3 rounded-sm"
               />
@@ -89,16 +89,6 @@ export default function Footer() {
             <p className="text-gray-300 text-sm">
               Seu guia completo sobre Terra Nova do Norte, Mato Grosso.
             </p>
-
-            {/* Dashboard link */}
-            <Link
-              href="/admin"
-              className="mt-4 inline-flex items-center text-gray-300 hover:text-white transition-colors"
-              aria-label="Painel administrativo"
-            >
-              <Settings size={16} className="mr-2" />
-              <span className="text-sm">Dashboard</span>
-            </Link>
           </div>
 
           {/* Footer sections */}
@@ -112,7 +102,7 @@ export default function Footer() {
       <div className="border-t border-gray-700 py-6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <Credits variant="dark" />
-          <div className="flex space-x-4">
+          <div className="flex items-center space-x-4">
             <Link
               href="/legal/termos"
               className="text-gray-400 hover:text-white text-sm transition-colors"
@@ -124,6 +114,14 @@ export default function Footer() {
               className="text-gray-400 hover:text-white text-sm transition-colors"
             >
               Política de Privacidade
+            </Link>
+            {/* Dashboard link */}
+            <Link
+              href="/admin"
+              className="flex items-center border-1 rounded-full p-1 text-gray-300 hover:text-white transition-colors"
+              aria-label="Painel administrativo"
+            >
+              <Settings size={16} />
             </Link>
           </div>
         </div>
