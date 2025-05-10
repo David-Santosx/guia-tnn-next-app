@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
@@ -16,6 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
+      <Analytics />
       <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
