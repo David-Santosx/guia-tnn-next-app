@@ -36,7 +36,7 @@ const historicalPhotos = [
     title: "Igreja Matriz Paróquia Nossa Senhora Aparecida (2008)",
     description:
       "Igreja Católica ainda com sua famosa cor azulada, vista da Av. Norberto Schwantes.",
-    imageUrl: "/images/historical/igreja-matriz.jpg",
+    imageUrl: "/images/historical/igreja-matriz.JPG",
     alt: "Igreja Católica ainda com sua famosa cor azulada, vista da Av. Norberto Schwantes.",
   },
 ];
