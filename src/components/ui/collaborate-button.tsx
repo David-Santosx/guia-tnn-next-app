@@ -8,7 +8,7 @@ export default function CollaborateButton() {
       href="https://chat.whatsapp.com/B5R8VJUbUQ4LIb4qUwa2rB"
       target="_blank"
       rel="noopener noreferrer"
-      className="group fixed bottom-6 right-6 flex items-center gap-3 border-2 border-brand-orange bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+      className="group fixed bottom-6 right-6 flex items-center gap-3 border-2 border-brand-orange bg-brand-blue hover:bg-brand-blue/90 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 z-50"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
