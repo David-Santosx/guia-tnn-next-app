@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       path: '/',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 2, // 2 hours in seconds
-      sameSite: 'strict'
+      sameSite: 'lax' // Alterado de 'strict' para 'lax' para permitir redirecionamentos
     });
     
     // Set user data cookie (encrypted)
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       path: '/',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 2, // 2 hours in seconds
-      sameSite: 'strict'
+      sameSite: 'lax' // Alterado de 'strict' para 'lax'
     });
     
     return new Response(
