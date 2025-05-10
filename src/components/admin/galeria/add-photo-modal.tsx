@@ -90,7 +90,7 @@ export function AddPhotoModal({ isOpen, onClose, onPhotoAdded }: AddPhotoModalPr
       const formData = new FormData();
       formData.append('file', file);
 
-      const uploadResponse = await fetch('/api/gallery/upload', {
+      const uploadResponse = await fetch('/api/galeria/upload', {
         method: 'POST',
         body: formData,
       });
@@ -105,7 +105,7 @@ export function AddPhotoModal({ isOpen, onClose, onPhotoAdded }: AddPhotoModalPr
 
       const dateISO = data.date ? new Date(data.date).toISOString() : '';
 
-      const response = await fetch('/api/gallery', {
+      const response = await fetch('/api/galeria', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
