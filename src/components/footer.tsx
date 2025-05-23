@@ -48,6 +48,14 @@ const FooterSection = ({ section }: { section: FooterSection }) => {
 export default function Footer() {
   const footerSections: FooterSection[] = [
     {
+      title: "Institucional",
+      links: [
+        { text: "Sobre Nós", href: "/sobre-nos" },
+        { text: "Termos de Uso", href: "/legal/termos" },
+        { text: "Política de Privacidade", href: "/legal/privacidade" },
+      ],
+    },
+    {
       title: "Navegação",
       links: [
         { text: "Sobre a Cidade", href: "/sobre" },
@@ -66,10 +74,10 @@ export default function Footer() {
         },
         { text: "(66) 99911-8905", href: "tel:+5566999118905", icon: Phone },
         { text: "Terra Nova do Norte, MT", href: "", icon: MapPin },
-        { 
-          text: "CNPJ: 60.742.446/0001-13", 
-          href: "", 
-          icon: Building2 
+        {
+          text: "CNPJ: 60.742.446/0001-13",
+          href: "",
+          icon: Building2,
         },
       ],
     },
@@ -110,18 +118,6 @@ export default function Footer() {
             <Credits variant="dark" />
           </div>
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <Link
-              href="/legal/termos"
-              className="text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              Termos de Uso
-            </Link>
-            <Link
-              href="/legal/privacidade"
-              className="text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              Política de Privacidade
-            </Link>
             {/* Dashboard link */}
             <Link
               href="/admin"
