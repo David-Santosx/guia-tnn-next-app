@@ -441,33 +441,55 @@ export default function Page() {
     );
   };
 
+  // Nova seção de mapa
+  const MapSection = () => {
+    return (
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6 md:px-12">
+          <h2 className="section-title pb-4">
+            Onde estamos
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
+            Terra Nova do Norte está localizada no norte de Mato Grosso, a aproximadamente 
+            630 km da capital Cuiabá. Confira nossa localização no mapa abaixo.
+          </p>
+          
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+            <div className="relative w-full h-[450px]">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31639.07788797248!2d-55.23249867910156!3d-10.618500399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93a7f4e5c5a6e1d7%3A0x7e7e5a1f0a8c6e7e!2sTerra%20Nova%20do%20Norte%2C%20MT!5e0!3m2!1spt-BR!2sbr!4v1652345678901!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="450" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Mapa de Terra Nova do Norte"
+                className="absolute inset-0"
+              ></iframe>
+            </div>
+            <div className="p-4 bg-gray-50 border-t border-gray-100">
+              <div className="flex items-center text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-orange mr-2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>Terra Nova do Norte, MT - Brasil</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
     <main>
       <HeroSection />
-      <div className="w-full bg-gray-100 py-8">
-        <div className="max-w-[728px] mx-auto flex items-center justify-center">
-          {anunciosLoading ? (
-            <div className="w-[728px] h-[90px] bg-gray-200 animate-pulse rounded-lg"></div>
-          ) : (
-            getAnunciosByPosition(0) && (
-              <Advertisement
-                src={getAnunciosByPosition(0)?.map(ad => ad.imageUrl) || []}
-                alt={getAnunciosByPosition(0)?.map(ad => ad.title) || []}
-                width={728}
-                height={90}
-                href="#"
-                startDate={getAnunciosByPosition(0)?.[0]?.startDate ? new Date(getAnunciosByPosition(0)![0].startDate) : undefined}
-                endDate={getAnunciosByPosition(0)?.[0]?.endDate ? new Date(getAnunciosByPosition(0)![0].endDate) : undefined}
-                isActive={true}
-                id="anuncio-topo"
-              />
-            )
-          )}
-        </div>
-      </div>
       <AboutSection />
-      <TestimonialsSection />
       <EventsSection />
+      <TestimonialsSection />
+      <MapSection />
       <CTASection />
     </main>
   );
