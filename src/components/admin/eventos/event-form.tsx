@@ -20,6 +20,9 @@ const eventSchema = z.object({
   location: z
     .string()
     .min(3, { message: "Local deve ter pelo menos 3 caracteres." }),
+  organization: z
+    .string()
+    .min(2, { message: "Organização deve ter pelo menos 2 caracteres." }),
   imageFile: z
     .any()
     .refine((files) => files?.length === 1, "Enviar apenas uma imagem.")
@@ -65,6 +68,7 @@ export function EventFormModal({
       date: event?.date ? new Date(event.date).toISOString().split("T")[0] : "",
       time: event?.date ? new Date(event.date).toTimeString().slice(0, 5) : "",
       location: event?.location || "",
+      organization: event?.organization || "",
       imageFile: event?.image || "",
     },
   });
@@ -80,6 +84,7 @@ export function EventFormModal({
       formData.append("date", data.date);
       formData.append("time", data.time);
       formData.append("location", data.location);
+      formData.append("organization", data.organization);
 
       if (data.imageFile && data.imageFile.length > 0) {
         formData.append("imageFile", data.imageFile[0]);
@@ -88,12 +93,12 @@ export function EventFormModal({
       if (event?.id) {
         formData.append("id", event.id);
         const result = await updateEvent(formData);
-        if (result.error) {
+        if (result && result.error) {
           throw new Error(result.error);
         }
       } else {
         const result = await createEvent(formData);
-        if (result.error) {
+        if (result && result.error) {
           throw new Error(result.error);
         }
       }
@@ -242,6 +247,26 @@ export function EventFormModal({
                 </p>
               )}
             </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="organization"
+              className="block text-sm font-medium text-gray-300 mb-1"
+            >
+              Organização *
+            </label>
+            <input
+              id="organization"
+              type="text"
+              {...register("organization")}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
+            />
+            {errors.organization && (
+              <p className="mt-1 text-xs text-red-400">
+                {errors.organization.message}
+              </p>
+            )}
           </div>
 
           <div>
