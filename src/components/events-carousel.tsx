@@ -110,7 +110,7 @@ export default function EventsCarousel({
                 <h3 className="text-2xl font-bold text-brand-blue mb-3">
                   {event.title}
                 </h3>
-                <p className="text-gray-600 mb-6 text-base">
+                <p className="text-gray-600 mb-6 text-base line-clamp-3">
                   {event.description}
                 </p>
 

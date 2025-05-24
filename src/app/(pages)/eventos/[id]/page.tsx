@@ -54,16 +54,19 @@ export default async function EventoDetalhePage(props: { params: PageParams, sea
         </Link>
 
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          {/* Imagem do evento */}
-          <div className="relative h-64 md:h-96 w-full">
-            <Image
-              src={event.imageUrl}
-              alt={event.title}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          {/* Imagem do evento com proporção fixa */}
+          <div className="relative w-full">
+            <div className="aspect-[16/9] relative">
+              <Image
+                src={event.imageUrl}
+                alt={event.title}
+                fill
+                className="object-contain bg-gray-100"
+                sizes="(max-width: 768px) 100vw, 1200px"
+                priority
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
             <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
               <h1 className="text-3xl md:text-4xl font-bold mb-2">
                 {event.title}
