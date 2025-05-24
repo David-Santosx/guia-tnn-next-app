@@ -66,7 +66,7 @@ export default function SobreNosPage() {
               Sobre o Guia TNN
             </h1>
             <p className="text-gray-600 text-center max-w-2xl mx-auto mb-8">
-              Conheça nossa história, missão e o time por trás do maior portal de informações sobre Terra Nova do Norte
+              Conheça nossa história, missão e o time por trás do mais novo portal de informações e guia virtual de Terra Nova do Norte
             </p>
           </ScrollReveal>
 
@@ -82,7 +82,7 @@ export default function SobreNosPage() {
               <div className="p-6 md:p-8 text-white">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">Conectando Terra Nova do Norte</h2>
                 <p className="text-white/90 max-w-2xl">
-                  Desde nossa fundação, trabalhamos para criar pontes entre os moradores, 
+                  Desde nossa idealização, trabalhamos para criar pontes entre os moradores, 
                   visitantes e empreendedores de nossa cidade.
                 </p>
               </div>
@@ -104,7 +104,7 @@ export default function SobreNosPage() {
 
             <div className="space-y-4 text-gray-600">
               <p>
-                O Guia TNN é o principal portal de informações sobre Terra Nova do Norte, 
+                O Guia TNN é o mais novo guia virtual de Terra Nova do Norte, 
                 criado com o objetivo de promover a cidade, seus eventos, comércios e atrações.
               </p>
               <p>
@@ -113,7 +113,7 @@ export default function SobreNosPage() {
                 possam encontrar tudo o que precisam saber sobre Terra Nova do Norte.
               </p>
               <p>
-                Nossa equipe é formada por profissionais dedicados e apaixonados pela 
+                Desenvolvido por um profissional dedicado e morador da 
                 cidade, trabalhando constantemente para trazer o melhor conteúdo e as 
                 informações mais relevantes para nossa comunidade.
               </p>
