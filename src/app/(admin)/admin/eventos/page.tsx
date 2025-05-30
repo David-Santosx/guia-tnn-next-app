@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Event } from "@/types/event";
 import { EventTable } from "@/components/admin/eventos/event-table";
-import { EventFormModal } from '@/components/admin/eventos/event-form';
+import { EventForm } from "@/components/admin/eventos/event-form";
 import { Plus } from "lucide-react";
 
 export default function AdminEventosPage() {
@@ -74,7 +74,7 @@ export default function AdminEventosPage() {
         onEdit={handleEditEvent}
         onDelete={handleDeleteEvent}
       />
-      <EventFormModal
+      <EventForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onEventAdded={fetchEvents}
