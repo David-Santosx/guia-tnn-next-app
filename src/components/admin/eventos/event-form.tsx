@@ -1,42 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Loader2, UploadCloud, X } from "lucide-react";
-import { Event } from "@/types/event";
-import { createEvent, updateEvent } from "@/app/actions/events";
+import { useState, useEffect } from "react";
+import { X, Loader2, Upload } from "lucide-react";
+import Image from "next/image";
+import { z } from "zod";
 
-const eventSchema = z.object({
-  title: z
-    .string()
-    .min(3, { message: "Título deve ter pelo menos 3 caracteres." }),
-  description: z
-    .string()
-    .min(10, { message: "Descrição deve ter pelo menos 10 caracteres." }),
-  date: z.string().min(1, { message: "Data é obrigatória" }),
-  time: z.string().min(1, { message: "Horário é obrigatório" }),
-  location: z
-    .string()
-    .min(3, { message: "Local deve ter pelo menos 3 caracteres." }),
-  organization: z
-    .string()
-    .min(2, { message: "Organização deve ter pelo menos 2 caracteres." }),
-  imageFile: z
-    .any()
-    .refine((files) => files?.length === 1, "Enviar apenas uma imagem.")
-    .refine(
-      (files) => files?.[0]?.type?.startsWith("image/"),
-      "Arquivo deve ser uma imagem."
-    )
-    .refine(
-      (files) => files?.[0]?.size <= 15 * 1024 * 1024,
-      "Imagem deve ter no máximo 15MB."
-    ),
-});
-
-type EventFormData = z.infer<typeof eventSchema>;
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  organization: string;
+  image: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 interface EventFormModalProps {
   isOpen: boolean;
@@ -45,322 +25,347 @@ interface EventFormModalProps {
   event?: Event;
 }
 
-export function EventFormModal({
+const eventSchema = z.object({
+  title: z.string().min(3, { message: "Título deve ter pelo menos 3 caracteres" }),
+  description: z.string().min(10, { message: "Descrição deve ter pelo menos 10 caracteres" }),
+  date: z.string().min(1, { message: "Data é obrigatória" }),
+  time: z.string().min(1, { message: "Horário é obrigatório" }),
+  location: z.string().min(3, { message: "Local deve ter pelo menos 3 caracteres" }),
+  organization: z.string().min(2, { message: "Organização deve ter pelo menos 2 caracteres" }),
+});
+
+export function EventForm({
   isOpen,
   onClose,
   onEventAdded,
   event,
 }: EventFormModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<EventFormData>({
-    resolver: zodResolver(eventSchema),
-    defaultValues: {
-      title: event?.title || "",
-      description: event?.description || "",
-      date: event?.date ? new Date(event.date).toISOString().split("T")[0] : "",
-      time: event?.date ? new Date(event.date).toTimeString().slice(0, 5) : "",
-      location: event?.location || "",
-      organization: event?.organization || "",
-      imageFile: event?.image || "",
-    },
+  const [formData, setFormData] = useState<Partial<Event>>({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: "",
+    organization: "",
+    image: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
-  const onSubmit = async (data: EventFormData) => {
-    setIsSubmitting(true);
-    setSubmitError(null);
+  useEffect(() => {
+    if (event) {
+      setFormData({
+        title: event.title || "",
+        description: event.description || "",
+        date: event.date || "",
+        time: event.time || "",
+        location: event.location || "",
+        organization: event.organization || "",
+        image: event.image || "",
+      });
+      setImagePreview(event.image || "");
+    } else {
+      resetForm();
+    }
+  }, [event, isOpen]);
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      date: "",
+      time: "",
+      location: "",
+      organization: "",
+      image: "",
+    });
+    setImageFile(null);
+    setImagePreview("");
+    setErrors({});
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const validateForm = () => {
     try {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("date", data.date);
-      formData.append("time", data.time);
-      formData.append("location", data.location);
-      formData.append("organization", data.organization);
-
-      if (data.imageFile && data.imageFile.length > 0) {
-        formData.append("imageFile", data.imageFile[0]);
+      eventSchema.parse(formData);
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        err.errors.forEach((error) => {
+          const field = error.path[0] as string;
+          newErrors[field] = error.message;
+        });
+        setErrors(newErrors);
       }
+      return false;
+    }
+  };
 
-      if (event?.id) {
-        formData.append("id", event.id);
-        const result = await updateEvent(formData);
-        if (result && result.error) {
-          throw new Error(result.error);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      let imageUrl = formData.image;
+      
+      if (imageFile) {
+        const formDataUpload = new FormData();
+        formDataUpload.append("file", imageFile);
+        
+        const uploadResponse = await fetch("/api/eventos/upload", {
+          method: "POST",
+          body: formDataUpload,
+        });
+        
+        if (!uploadResponse.ok) {
+          throw new Error("Falha ao fazer upload da imagem");
         }
-      } else {
-        const result = await createEvent(formData);
-        if (result && result.error) {
-          throw new Error(result.error);
-        }
+        
+        const uploadResult = await uploadResponse.json();
+        imageUrl = uploadResult.imageUrl;
       }
-
+      
+      const url = event?.id 
+        ? `/api/eventos/${event.id}` 
+        : "/api/eventos";
+      
+      const method = event?.id ? "PUT" : "POST";
+      
+      const dataToSend = {
+        ...formData,
+        image: imageUrl,
+      };
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Falha ao salvar evento");
+      }
+      
       onEventAdded();
-      handleClose();
+      onClose();
+      resetForm();
     } catch (error) {
-      console.error("Submission error:", error);
-      setSubmitError(
-        error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
-      );
+      console.error("Erro ao salvar evento:", error);
+      alert(error instanceof Error ? error.message : "Erro desconhecido");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleClose = () => {
-    reset();
-    setSubmitError(null);
-    setIsSubmitting(false);
-    onClose();
-  };
-
-  const handleImageSelect = (file: File | null) => {
-    if (!file) {
-      setPreviewUrl(null);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => setPreviewUrl(e.target?.result as string);
-    reader.readAsDataURL(file);
-  };
-
-  // No campo de imagem, atualizar o previewUrl ao selecionar um arquivo
-  <input
-    id="imageFile"
-    type="file"
-    {...register("imageFile")}
-    accept="image/*"
-    className="sr-only"
-    onChange={(e) => handleImageSelect(e.target.files?.[0] as File)}
-  />;
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-gray-800 rounded-lg shadow-xl w-full max-w-lg border border-gray-700 max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center p-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold text-white">
-            {event ? "Editar Evento" : "Adicionar Novo Evento"}
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-800 rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+          <h2 className="text-xl font-semibold text-white">
+            {event ? "Editar Evento" : "Adicionar Evento"}
           </h2>
           <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-white"
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
-          {submitError && (
-            <div className="bg-red-900/30 border border-red-700 text-red-300 px-3 py-2 rounded-md text-sm">
-              {submitError}
-            </div>
-          )}
-
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
-              Título *
-            </label>
-            <input
-              id="title"
-              type="text"
-              {...register("title")}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-            />
-            {errors.title && (
-              <p className="mt-1 text-xs text-red-400">
-                {errors.title.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
-              Descrição *
-            </label>
-            <textarea
-              id="description"
-              {...register("description")}
-              rows={3}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-            />
-            {errors.description && (
-              <p className="mt-1 text-xs text-red-400">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="date"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                Data *
-              </label>
-              <input
-                id="date"
-                type="date"
-                {...register("date")}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-              />
-              {errors.date && (
-                <p className="mt-1 text-xs text-red-400">
-                  {errors.date.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="time"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                Horário *
-              </label>
-              <input
-                id="time"
-                type="time"
-                {...register("time")}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-              />
-              {errors.time && (
-                <p className="mt-1 text-xs text-red-400">
-                  {errors.time.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="organization"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
-              Organização *
-            </label>
-            <input
-              id="organization"
-              type="text"
-              {...register("organization")}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-            />
-            {errors.organization && (
-              <p className="mt-1 text-xs text-red-400">
-                {errors.organization.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
-              Local *
-            </label>
-            <input
-              id="location"
-              type="text"
-              {...register("location")}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-brand-orange focus:border-brand-orange"
-            />
-            {errors.location && (
-              <p className="mt-1 text-xs text-red-400">
-                {errors.location.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="imageFile"
-              className="block text-sm font-medium text-gray-300 mb-1"
-            >
-              Arquivo da Imagem *
-            </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md">
-              <div className="space-y-1 text-center">
-                {previewUrl ? (
-                  <img
-                    src={previewUrl}
-                    alt="Preview"
-                    className="mx-auto h-24 w-auto rounded object-contain"
-                  />
-                ) : (
-                  <>
-                    <UploadCloud className="mx-auto h-12 w-12 text-gray-500" />
-                  </>
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Título*
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.title && (
+                  <p className="text-red-400 text-xs mt-1">{errors.title}</p>
                 )}
+              </div>
 
-                <div className="flex text-sm text-gray-400 justify-center">
-                  <label
-                    htmlFor="imageFile"
-                    className="relative cursor-pointer bg-gray-700 rounded-md font-medium text-brand-orange hover:text-brand-orange/80 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-800 focus-within:ring-brand-orange px-1"
-                  >
-                    <span>Carregar um arquivo</span>
-                    <input
-                      id="imageFile"
-                      type="file"
-                      {...register("imageFile")}
-                      accept="image/*"
-                      className="sr-only"
-                      onChange={(e) =>
-                        handleImageSelect(e.target.files?.[0] as File)
-                      }
-                    />
-                  </label>
-                  <p className="pl-1">ou arraste e solte</p>
-                </div>
-                <p className="text-xs text-gray-500">
-                  PNG, JPG, GIF, WEBP até 15MB
-                </p>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Data*
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.date && (
+                  <p className="text-red-400 text-xs mt-1">{errors.date}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Horário*
+                </label>
+                <input
+                  type="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.time && (
+                  <p className="text-red-400 text-xs mt-1">{errors.time}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Organização*
+                </label>
+                <input
+                  type="text"
+                  name="organization"
+                  value={formData.organization}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.organization && (
+                  <p className="text-red-400 text-xs mt-1">{errors.organization}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Local*
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.location && (
+                  <p className="text-red-400 text-xs mt-1">{errors.location}</p>
+                )}
               </div>
             </div>
-            {errors.imageFile && (
-              <p className="mt-1 text-xs text-red-400">
-                {String(errors.imageFile.message)}
-              </p>
-            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Descrição*
+                </label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                />
+                {errors.description && (
+                  <p className="text-red-400 text-xs mt-1">{errors.description}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Imagem
+                </label>
+                <div className="flex items-center space-x-4">
+                  <div className="flex-1">
+                    <label className="flex items-center justify-center w-full h-32 px-4 transition bg-gray-700 border-2 border-gray-600 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-500 focus:outline-none">
+                      <span className="flex items-center space-x-2">
+                        <Upload size={22} className="text-gray-400" />
+                        <span className="font-medium text-gray-400">
+                          Selecionar imagem
+                        </span>
+                      </span>
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                  {imagePreview && (
+                    <div className="relative w-32 h-32 rounded-md overflow-hidden">
+                      <Image
+                        src={imagePreview}
+                        alt="Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-700">
             <button
               type="button"
-              onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white mr-2"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors"
               disabled={isSubmitting}
             >
               Cancelar
             </button>
             <button
               type="submit"
+              className="px-4 py-2 bg-brand-orange text-white rounded-md hover:bg-brand-orange/90 transition-colors flex items-center"
               disabled={isSubmitting}
-              className="flex items-center justify-center px-4 py-2 bg-brand-orange hover:bg-brand-orange/90 text-white rounded-md min-w-[100px]"
             >
               {isSubmitting ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : event ? (
-                "Salvar"
+                <>
+                  <Loader2 size={18} className="animate-spin mr-2" />
+                  Salvando...
+                </>
               ) : (
-                "Adicionar"
+                "Salvar"
               )}
             </button>
           </div>
