@@ -62,7 +62,7 @@ export async function POST(request: Request) {
           description,
           organization,
           date: new Date(date),
-          time: time || null,
+          time: time || "", // Usar string vazia como fallback ao invés de null
           location,
           imageUrl,
           createdById
