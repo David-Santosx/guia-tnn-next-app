@@ -34,7 +34,8 @@ export function middleware(request: NextRequest) {
       '/api/auth/login',
       '/api/eventos',
       '/api/comercios',
-      '/api/galeria'
+      '/api/galeria',
+      '/api/anuncios',
     ];
 
     // Verificar se é uma rota pública
