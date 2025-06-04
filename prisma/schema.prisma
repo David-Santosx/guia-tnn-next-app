@@ -45,8 +45,8 @@ model Event {
   location     String
   imageUrl     String
   createdAt    DateTime @default(now())
-  createdBy    Admin    @relation(fields: [createdById], references: [id])
-  createdById  String
+  createdBy    Admin?    @relation(fields: [createdById], references: [id])
+  createdById  String?
 }
 
 model Advertisement {
