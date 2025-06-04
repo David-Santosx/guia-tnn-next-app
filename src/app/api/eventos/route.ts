@@ -10,7 +10,7 @@ const eventSchema = z.object({
   date: z.string().optional().nullable(),
   time: z.string().optional().nullable(),
   location: z.string().min(1, { message: 'Localização é obrigatória' }),
-  imageUrl: z.string().url({ message: 'URL de imagem inválida' }),
+  image: z.string().url({ message: 'URL de imagem inválida' }),
   createdById: z.string().optional().nullable(),
 })
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
     if (contentType === 'application/json') {
       data = await request.json();
-      const { title, description, organization, date, time, location, imageUrl, createdById } = data;
+      const { title, description, organization, date, time, location, image, createdById } = data;
 
       const validationResult = eventSchema.safeParse({
         title,
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         date,
         time,
         location,
-        imageUrl,
+        image,
         createdById
       });
 
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
           date: new Date(date),
           time: time || "", // Usar string vazia como fallback ao invés de null
           location,
-          imageUrl,
+          imageUrl: image,
           createdById
         }
       });
