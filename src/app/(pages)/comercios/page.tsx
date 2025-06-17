@@ -117,10 +117,43 @@ export default function ComerciosPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-brand-blue mb-2">
           Comércios em Terra Nova do Norte
         </h1>
-        
+
         <p className="text-gray-600 mb-8">
-          Conheça os estabelecimentos comerciais da cidade e encontre o que você precisa
+          Conheça os estabelecimentos comerciais da cidade e encontre o que você
+          precisa
         </p>
+
+        {/* Banner para adicionar comércio */}
+        <div className="mb-8 rounded-xl bg-brand-blue/10 border border-brand-blue/20 px-6 py-4 flex items-center gap-4 shadow-sm">
+          <svg
+            className="w-7 h-7 text-brand-blue"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <div className="flex-1">
+            <span className="font-semibold text-brand-blue">
+              Tem um comércio e quer aparecer aqui?
+            </span>
+            <span className="block text-sm text-brand-blue/80">
+              Entre em contato conosco para adicionar seu estabelecimento à
+              lista!
+            </span>
+          </div>
+          <a
+            href="mailto:contato@seusite.com.br?subject=Adicionar%20meu%20comércio%20em%20Terra%20Nova%20do%20Norte"
+            className="inline-block bg-brand-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-blue/90 transition"
+          >
+            Entrar em contato
+          </a>
+        </div>
 
         {/* Estado de carregamento */}
         {isLoading && (
@@ -174,9 +207,9 @@ export default function ComerciosPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {comerciosAbertos.map((comercio) => (
-                <CommerceCard 
-                  key={comercio.id} 
-                  commerce={comercio} 
+                <CommerceCard
+                  key={comercio.id}
+                  commerce={comercio}
                   isOpen={true}
                 />
               ))}
@@ -193,9 +226,9 @@ export default function ComerciosPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {comerciosFechados.map((comercio) => (
-                <CommerceCard 
-                  key={comercio.id} 
-                  commerce={comercio} 
+                <CommerceCard
+                  key={comercio.id}
+                  commerce={comercio}
                   isOpen={false}
                 />
               ))}
