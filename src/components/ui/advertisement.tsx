@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from "react";
+import { Info } from "lucide-react";
 
 interface AdvertisementProps {
   src: string | string[];
@@ -86,15 +87,18 @@ export function Advertisement({
   const imageComponent = (
     <div
       className={cn(
-        "overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 relative",
+        "overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 relative",
         position === "fixed" && "fixed z-50",
         containerClassName
       )}
       data-ad-id={currentId}
     >
       {/* Indicador de publicidade */}
-      <div className="absolute top-0 left-0 bg-black/40 text-white text-[8px] px-2 py-1 z-10 rounded-br-md">
-        Publicidade
+      <div className="absolute top-0 left-0 bg-black/40 text-white text-[6px] px-2 py-1 z-50 rounded-br-md flex flex-col items-center justify-center group">
+        <Info className="w-3 h-3" />
+        <span className="opacity-0 group-hover:opacity-100 transition-opacity absolute left-full ml-2 bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap pointer-events-none">
+          Publicidade
+        </span>
       </div>
 
       <Image
@@ -104,7 +108,7 @@ export function Advertisement({
         height={height}
         priority={priority}
         className={cn(
-          "w-full h-full object-cover hover:scale-105 transition-transform duration-300",
+          "w-full h-full object-cover transition-transform duration-300",
           className
         )}
         onClick={onClick}

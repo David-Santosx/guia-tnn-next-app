@@ -7,13 +7,14 @@ import TestimonialCarousel from "@/components/testimonial-carousel";
 import EventsCarousel from "@/components/events-carousel";
 import { useEffect, useState } from "react";
 import { Advertisement } from "@/components/ui/advertisement";
+import {WeatherCard} from "@/components/weather-card"; // Importando o novo componente
 
 const HeroSection = () => {
   const scrollToNextSection = () => {
     // Encontra a próxima seção após o hero
-    const nextSection = document.querySelector('section:nth-of-type(2)');
+    const nextSection = document.querySelector("section:nth-of-type(2)");
     if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
+      nextSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -52,8 +53,9 @@ const HeroSection = () => {
             </h1>
             <p className="text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto opacity-0 animate-[fadeIn_1s_ease-in-out_2.5s_forwards]">
               Este guia virtual fará você descobrir os encantos, tradições e
-              belezas naturais que fazem de Terra Nova do Norte um lugar único no
-              coração de Mato Grosso. Prepare-se para uma jornada inesquecível!
+              belezas naturais que fazem de Terra Nova do Norte um lugar único
+              no coração de Mato Grosso. Prepare-se para uma jornada
+              inesquecível!
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-[fadeIn_1s_ease-in-out_3s_forwards]">
@@ -73,14 +75,25 @@ const HeroSection = () => {
               </Link>
             </div>
           </div>
-          
+
           <div className="absolute bottom-[-60px] left-0 right-0 flex justify-center animate-bounce">
-            <div 
+            <div
               onClick={scrollToNextSection}
               className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                <path d="M12 5v14M5 12l7 7 7-7"/>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-white"
+              >
+                <path d="M12 5v14M5 12l7 7 7-7" />
               </svg>
             </div>
           </div>
@@ -143,27 +156,29 @@ export default function Page() {
   // Função para obter anúncios por posição
   const getAnunciosByPosition = (position: number) => {
     // Filtra anúncios ativos pela posição
-    const filteredAds = anuncios.filter((ad) => ad.position === position && ad.isActive);
-    
+    const filteredAds = anuncios.filter(
+      (ad) => ad.position === position && ad.isActive
+    );
+
     // Verifica se há anúncios e se estão dentro do período de validade
     if (filteredAds.length === 0) return null;
-    
+
     // Filtra anúncios que estão dentro do período de validade
-    const validAds = filteredAds.filter(ad => {
+    const validAds = filteredAds.filter((ad) => {
       const now = new Date();
       const startDate = ad.startDate ? new Date(ad.startDate) : null;
       const endDate = ad.endDate ? new Date(ad.endDate) : null;
-      
+
       // Se não tiver datas definidas, é válido
       if (!startDate && !endDate) return true;
-      
+
       // Verifica se está dentro do período
       if (startDate && now < startDate) return false;
       if (endDate && now > endDate) return false;
-      
+
       return true;
     });
-    
+
     return validAds.length > 0 ? validAds : null;
   };
 
@@ -179,13 +194,23 @@ export default function Page() {
               ) : (
                 getAnunciosByPosition(1) && (
                   <Advertisement
-                    src={getAnunciosByPosition(1)?.map(ad => ad.imageUrl) || []}
-                    alt={getAnunciosByPosition(1)?.map(ad => ad.title) || []}
+                    src={
+                      getAnunciosByPosition(1)?.map((ad) => ad.imageUrl) || []
+                    }
+                    alt={getAnunciosByPosition(1)?.map((ad) => ad.title) || []}
                     width={250}
                     height={600}
                     href="#"
-                    startDate={getAnunciosByPosition(1)?.[0]?.startDate ? new Date(getAnunciosByPosition(1)![0].startDate) : undefined}
-                    endDate={getAnunciosByPosition(1)?.[0]?.endDate ? new Date(getAnunciosByPosition(1)![0].endDate) : undefined}
+                    startDate={
+                      getAnunciosByPosition(1)?.[0]?.startDate
+                        ? new Date(getAnunciosByPosition(1)![0].startDate)
+                        : undefined
+                    }
+                    endDate={
+                      getAnunciosByPosition(1)?.[0]?.endDate
+                        ? new Date(getAnunciosByPosition(1)![0].endDate)
+                        : undefined
+                    }
                     isActive={true}
                     id="anuncio-lateral-esquerdo"
                   />
@@ -194,7 +219,38 @@ export default function Page() {
             </div>
 
             {/* Conteúdo Principal */}
-            <div className="flex-1 max-w-4xl mx-auto px-0 md:px-6">
+            <div className="flex-1 max-w-4xl mx-auto px-0">
+              <div className="hidden xl:flex z-50 justify-center w-full h-[90px] flex-shrink-0 sticky top-24 mb-5">
+                {anunciosLoading ? (
+                  <div className="w-[728px] h-[90px] bg-gray-200 animate-pulse"></div>
+                ) : (
+                  getAnunciosByPosition(0) && (
+                    <Advertisement
+                      src={
+                        getAnunciosByPosition(0)?.map((ad) => ad.imageUrl) || []
+                      }
+                      alt={
+                        getAnunciosByPosition(0)?.map((ad) => ad.title) || []
+                      }
+                      width={728}
+                      height={90}
+                      href="#"
+                      startDate={
+                        getAnunciosByPosition(0)?.[0]?.startDate
+                          ? new Date(getAnunciosByPosition(0)![0].startDate)
+                          : undefined
+                      }
+                      endDate={
+                        getAnunciosByPosition(0)?.[0]?.endDate
+                          ? new Date(getAnunciosByPosition(0)![0].endDate)
+                          : undefined
+                      }
+                      isActive={true}
+                      id="anuncio-top"
+                    />
+                  )
+                )}
+              </div>
               <h2 className="section-title pb-4">
                 Um pouco mais sobre nosso município
               </h2>
@@ -213,7 +269,9 @@ export default function Page() {
               <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-12">
                 <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[-3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group card-hover">
                   <div className="absolute inset-0 bg-brand-blue/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
-                    <span className="text-white font-bold text-xl bg-brand-blue/70 px-4 py-2 rounded-lg">Natureza Exuberante</span>
+                    <span className="text-white font-bold text-xl bg-brand-blue/70 px-4 py-2 rounded-lg">
+                      Natureza Exuberante
+                    </span>
                   </div>
                   <Image
                     src="/brand/about-image-1.jpg"
@@ -228,7 +286,9 @@ export default function Page() {
 
                 <div className="relative w-full md:w-2/5 h-64 md:h-80 transform rotate-[3deg] transition-all duration-500 hover:rotate-0 hover:scale-105 group card-hover">
                   <div className="absolute inset-0 bg-brand-orange/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
-                    <span className="text-white font-bold text-xl bg-brand-orange/70 px-4 py-2 rounded-lg">Cidade Acolhedora</span>
+                    <span className="text-white font-bold text-xl bg-brand-orange/70 px-4 py-2 rounded-lg">
+                      Cidade Acolhedora
+                    </span>
                   </div>
                   <Image
                     src="/brand/about-image-2.jpg"
@@ -243,33 +303,56 @@ export default function Page() {
               </div>
 
               <div className="bg-gray-50 p-6 rounded-xl shadow-md mb-12">
-                <h3 className="text-xl font-semibold text-brand-blue mb-4">Destaques da Cidade</h3>
+                <h3 className="text-xl font-semibold text-brand-blue mb-4">
+                  Destaques da Cidade
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center text-brand-orange mb-2">
                       <MegaphoneIcon className="w-5 h-5 mr-2" />
                       <h4 className="font-medium">Eventos Culturais</h4>
                     </div>
-                    <p className="text-sm text-gray-600">Festas tradicionais e eventos culturais durante todo o ano.</p>
+                    <p className="text-sm text-gray-600">
+                      Festas tradicionais e eventos culturais durante todo o
+                      ano.
+                    </p>
                   </div>
                   <div className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center text-brand-blue mb-2">
                       <ImagesIcon className="w-5 h-5 mr-2" />
                       <h4 className="font-medium">Belezas Naturais</h4>
                     </div>
-                    <p className="text-sm text-gray-600">Cachoeiras, rios e paisagens deslumbrantes para explorar.</p>
+                    <p className="text-sm text-gray-600">
+                      Cachoeiras, rios e paisagens deslumbrantes para explorar.
+                    </p>
                   </div>
                   <div className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                     <div className="flex items-center text-green-600 mb-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="mr-2"
+                      >
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                       </svg>
                       <h4 className="font-medium">Gastronomia</h4>
                     </div>
-                    <p className="text-sm text-gray-600">Culinária típica com influências sulistas e regionais.</p>
+                    <p className="text-sm text-gray-600">
+                      Culinária típica com influências sulistas e regionais.
+                    </p>
                   </div>
                 </div>
               </div>
+
+              {/* Previsão do Tempo */}
+              <WeatherCard />
 
               <p className="text-gray-700 text-center mb-8 leading-relaxed">
                 Além de suas belezas naturais, como cachoeiras cristalinas e
@@ -290,13 +373,23 @@ export default function Page() {
               ) : (
                 getAnunciosByPosition(2) && (
                   <Advertisement
-                    src={getAnunciosByPosition(2)?.map(ad => ad.imageUrl) || []}
-                    alt={getAnunciosByPosition(2)?.map(ad => ad.title) || []}
+                    src={
+                      getAnunciosByPosition(2)?.map((ad) => ad.imageUrl) || []
+                    }
+                    alt={getAnunciosByPosition(2)?.map((ad) => ad.title) || []}
                     width={250}
                     height={600}
                     href="#"
-                    startDate={getAnunciosByPosition(2)?.[0]?.startDate ? new Date(getAnunciosByPosition(2)![0].startDate) : undefined}
-                    endDate={getAnunciosByPosition(2)?.[0]?.endDate ? new Date(getAnunciosByPosition(2)![0].endDate) : undefined}
+                    startDate={
+                      getAnunciosByPosition(2)?.[0]?.startDate
+                        ? new Date(getAnunciosByPosition(2)![0].startDate)
+                        : undefined
+                    }
+                    endDate={
+                      getAnunciosByPosition(2)?.[0]?.endDate
+                        ? new Date(getAnunciosByPosition(2)![0].endDate)
+                        : undefined
+                    }
                     isActive={true}
                     id="anuncio-lateral-direito"
                   />
@@ -315,11 +408,9 @@ export default function Page() {
         {/* Elementos decorativos */}
         <div className="absolute top-0 left-0 w-32 h-32 bg-brand-orange/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-blue/10 rounded-full translate-x-1/3 translate-y-1/3"></div>
-        
+
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <h2 className="section-title pb-4">
-            Qual a opinião dos moradores?
-          </h2>
+          <h2 className="section-title pb-4">Qual a opinião dos moradores?</h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
             Convidamos alguns moradores para compartilhar suas experiências e
@@ -347,7 +438,7 @@ export default function Page() {
           </div>
         </section>
       );
-      
+
     if (eventsError)
       return (
         <section className="py-16 bg-white">
@@ -366,15 +457,13 @@ export default function Page() {
       <section className="py-16 bg-white relative">
         <div className="absolute inset-0 bg-[url('/brand/pattern-bg.png')] opacity-5"></div>
         <div className="container mx-auto px-6 md:px-12 relative z-10">
-          <h2 className="section-title pb-4">
-            Eventos e Festas
-          </h2>
+          <h2 className="section-title pb-4">Eventos e Festas</h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
             Confira os eventos que estão acontecendo em Terra Nova do Norte.
             Venha participar e vivenciar momentos especiais em nossa cidade!
           </p>
           <EventsCarousel events={events} autoRotateInterval={3000} />
-          
+
           <div className="text-center mt-8">
             <Link
               href="/eventos"
@@ -397,43 +486,88 @@ export default function Page() {
             Explore Terra Nova do Norte
           </h2>
           <p className="max-w-2xl mx-auto mb-8 text-white/90">
-            Descubra tudo o que nossa cidade tem a oferecer. Comércios locais, eventos, 
-            pontos turísticos e muito mais em um só lugar.
+            Descubra tudo o que nossa cidade tem a oferecer. Comércios locais,
+            eventos, pontos turísticos e muito mais em um só lugar.
           </p>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
-            <Link href="/sobre" className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 16v-4M12 8h.01"/>
+            <Link
+              href="/sobre"
+              className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mb-2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4M12 8h.01" />
               </svg>
               <span>Sobre a Cidade</span>
             </Link>
-            <Link href="/galeria" className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center">
+            <Link
+              href="/galeria"
+              className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center"
+            >
               <ImagesIcon className="mb-2" />
               <span>Galeria de Fotos</span>
             </Link>
-            <Link href="/eventos" className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center">
+            <Link
+              href="/eventos"
+              className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center"
+            >
               <MegaphoneIcon className="mb-2" />
               <span>Eventos</span>
             </Link>
-            <Link href="/comercios" className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2">
-                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/>
-                <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/>
-                <path d="M12 3v6"/>
+            <Link
+              href="/comercios"
+              className="bg-white/10 backdrop-blur-sm p-4 rounded-lg hover:bg-white/20 transition-colors flex flex-col items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mb-2"
+              >
+                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
+                <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
+                <path d="M12 3v6" />
               </svg>
               <span>Comércios</span>
             </Link>
           </div>
-          
-          <Link 
-            href="/sobre-nos" 
+
+          <Link
+            href="/sobre-nos"
             className="inline-flex items-center bg-white text-brand-blue px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors"
           >
             Conheça quem está por trás do Guia TNN
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </Link>
         </div>
@@ -446,23 +580,22 @@ export default function Page() {
     return (
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6 md:px-12">
-          <h2 className="section-title pb-4">
-            Onde estamos
-          </h2>
+          <h2 className="section-title pb-4">Onde estamos</h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-center mb-12">
-            Terra Nova do Norte está localizada no norte de Mato Grosso, a aproximadamente 
-            630 km da capital Cuiabá. Confira nossa localização no mapa abaixo.
+            Terra Nova do Norte está localizada no norte de Mato Grosso, a
+            aproximadamente 630 km da capital Cuiabá. Confira nossa localização
+            no mapa abaixo.
           </p>
-          
+
           <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
             <div className="relative w-full h-[450px]">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31639.07788797248!2d-55.23249867910156!3d-10.618500399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93a7f4e5c5a6e1d7%3A0x7e7e5a1f0a8c6e7e!2sTerra%20Nova%20do%20Norte%2C%20MT!5e0!3m2!1spt-BR!2sbr!4v1652345678901!5m2!1spt-BR!2sbr" 
-                width="100%" 
-                height="450" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31639.07788797248!2d-55.23249867910156!3d-10.618500399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93a7f4e5c5a6e1d7%3A0x7e7e5a1f0a8c6e7e!2sTerra%20Nova%20do%20Norte%2C%20MT!5e0!3m2!1spt-BR!2sbr!4v1652345678901!5m2!1spt-BR!2sbr"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Mapa de Terra Nova do Norte"
                 className="absolute inset-0"
@@ -470,7 +603,18 @@ export default function Page() {
             </div>
             <div className="p-4 bg-gray-50 border-t border-gray-100">
               <div className="flex items-center text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-orange mr-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-brand-orange mr-2"
+                >
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
