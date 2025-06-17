@@ -148,7 +148,7 @@ export default function ComerciosPage() {
             </span>
           </div>
           <a
-            href="mailto:contato@seusite.com.br?subject=Adicionar%20meu%20comércio%20em%20Terra%20Nova%20do%20Norte"
+            href="mailto:guiatnn@hotmail.com?subject=Adicionar%20meu%20comércio%20em%20Terra%20Nova%20do%20Norte"
             className="inline-block bg-brand-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-blue/90 transition"
           >
             Entrar em contato
