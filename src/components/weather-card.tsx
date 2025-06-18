@@ -12,8 +12,8 @@ export const WeatherCard = () => {
   const [loading, setLoading] = useState(true);
 
   const API_KEY = "1e5027a9549d4f4183e222142251706";
-  const LAT = -10.6185;
-  const LON = -55.2317;
+  const LAT = -10.5989708;
+  const LON = -55.1181394;
 
   useEffect(() => {
     fetch(
