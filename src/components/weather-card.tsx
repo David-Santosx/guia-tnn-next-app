@@ -53,7 +53,7 @@ export const WeatherCard = () => {
         setForecast(days);
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [LAT, LON]);
 
   // Função para traduzir o código do tempo em ícone e texto
   const getWeatherInfo = (code: number) => {
@@ -120,7 +120,7 @@ export const WeatherCard = () => {
             ? Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex flex-col items-center gap-1 p-2 bg-gray-100 rounded animate-pulse h-24" />
               ))
-            : forecast.map((day, i) => (
+            : forecast.map((day) => (
                 <div key={day.date} className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded">
                   <span className="text-xs text-gray-500">{formatDate(day.date)}</span>
                   {getWeatherInfo(day.code).icon}
