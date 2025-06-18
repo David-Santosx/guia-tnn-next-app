@@ -72,8 +72,8 @@ export default function SobreNosPage() {
 
           <div className="relative w-full max-w-4xl mx-auto aspect-[16/9] rounded-2xl overflow-hidden shadow-xl mt-8">
             <Image
-              src="/brand/about-image-1.jpg"
-              alt="Equipe do Guia TNN"
+              src="/images/conhecendo-terra-nova.png"
+              alt="Conectando Terra Nova do Norte - Igreja Comunidade Nossa Senhora de Fátima"
               fill
               className="object-cover"
               priority

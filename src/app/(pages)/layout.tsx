@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import type { Metadata } from "next";
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guiatnn.com.br"),
@@ -20,6 +21,7 @@ export default function PagesLayout({
   return (
     <>
       <Header />
+      <Toaster position="top-right" />
       <main>{children}</main>
       <Footer />
     </>

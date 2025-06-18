@@ -453,6 +453,28 @@ export default function Page() {
         </section>
       );
 
+    // Adicionado: feedback visual para lista vazia
+    if (!events || events.length === 0)
+      return (
+        <section className="py-16 bg-white relative">
+          <div className="absolute inset-0 bg-[url('/brand/pattern-bg.png')] opacity-5"></div>
+          <div className="container mx-auto px-6 md:px-12 relative z-10 text-center">
+            <h2 className="section-title pb-4">Eventos e Festas</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-center mb-8">
+              No momento não há eventos cadastrados.<br />
+              Que tal conferir nossa <Link href="/galeria" className="text-brand-blue underline hover:text-brand-orange transition-colors">galeria de fotos</Link> para conhecer mais sobre Terra Nova do Norte?
+            </p>
+            <Link
+              href="/galeria"
+              className="inline-flex items-center bg-brand-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-brand-blue/90 transition-colors"
+            >
+              <ImagesIcon className="w-5 h-5 mr-2" />
+              Ir para Galeria de Fotos
+            </Link>
+          </div>
+        </section>
+      );
+
     return (
       <section className="py-16 bg-white relative">
         <div className="absolute inset-0 bg-[url('/brand/pattern-bg.png')] opacity-5"></div>
