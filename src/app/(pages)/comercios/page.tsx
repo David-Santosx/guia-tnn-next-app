@@ -124,7 +124,7 @@ export default function ComerciosPage() {
         </p>
 
         {/* Banner para adicionar comércio */}
-        <div className="mb-8 rounded-xl bg-brand-blue/10 border border-brand-blue/20 px-6 py-4 flex items-center gap-4 shadow-sm">
+        <div className="mb-4 rounded-xl bg-brand-blue/10 border border-brand-blue/20 px-6 py-4 flex items-center gap-4 shadow-sm">
           <svg
             className="w-7 h-7 text-brand-blue"
             fill="none"
@@ -152,6 +152,29 @@ export default function ComerciosPage() {
             className="inline-block bg-brand-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-blue/90 transition"
           >
             Entrar em contato
+          </a>
+        </div>
+
+        {/* Âncora para o curso de design de sobrancelhas */}
+        <div className="mb-8 rounded-xl bg-gradient-to-r from-pink-50 to-orange-50 border border-pink-200/20 px-6 py-4 flex items-center gap-4 shadow-sm group transition-all hover:shadow-md">
+          <div className="flex-1">
+            <span className="font-medium text-gray-900">
+              Já pensou em ter seu próprio negócio?
+            </span>
+            <span className="block text-sm text-gray-600">
+              Seja uma profissional em design de sobrancelhas e comece sua história de sucesso em Terra Nova do Norte!
+            </span>
+          </div>
+          <a
+            href="https://lotustrainings.com/design-profissional-lotus?ref=C100377876A"
+            target="_blank"
+            rel="sponsored"
+            className="inline-flex items-center bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-orange/90 transition group-hover:translate-x-1"
+          >
+            Conhecer o curso
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </a>
         </div>
 

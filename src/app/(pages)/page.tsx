@@ -7,7 +7,8 @@ import TestimonialCarousel from "@/components/testimonial-carousel";
 import EventsCarousel from "@/components/events-carousel";
 import { useEffect, useState } from "react";
 import { Advertisement } from "@/components/ui/advertisement";
-import {WeatherCard} from "@/components/weather-card"; // Importando o novo componente
+import { WeatherCard } from "@/components/weather-card";
+import { AffiliateBanner } from "@/components/ui/affiliate-banner";
 
 const HeroSection = () => {
   const scrollToNextSection = () => {
@@ -351,8 +352,8 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Previsão do Tempo */}
-              <WeatherCard />
+              {/* Banner de afiliados */}
+              <AffiliateBanner />
 
               <p className="text-gray-700 text-center mb-8 leading-relaxed">
                 Além de suas belezas naturais, como cachoeiras cristalinas e
@@ -461,8 +462,16 @@ export default function Page() {
           <div className="container mx-auto px-6 md:px-12 relative z-10 text-center">
             <h2 className="section-title pb-4">Eventos e Festas</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-center mb-8">
-              No momento não há eventos cadastrados.<br />
-              Que tal conferir nossa <Link href="/galeria" className="text-brand-blue underline hover:text-brand-orange transition-colors">galeria de fotos</Link> para conhecer mais sobre Terra Nova do Norte?
+              No momento não há eventos cadastrados.
+              <br />
+              Que tal conferir nossa{" "}
+              <Link
+                href="/galeria"
+                className="text-brand-blue underline hover:text-brand-orange transition-colors"
+              >
+                galeria de fotos
+              </Link>{" "}
+              para conhecer mais sobre Terra Nova do Norte?
             </p>
             <Link
               href="/galeria"
@@ -656,6 +665,8 @@ export default function Page() {
       <EventsSection />
       <TestimonialsSection />
       <MapSection />
+      {/* Previsão do Tempo */}
+      <WeatherCard />
       <CTASection />
     </main>
   );
