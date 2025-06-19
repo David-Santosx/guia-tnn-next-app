@@ -17,6 +17,7 @@ interface Commerce {
   location: string;
   createdAt: string;
   updatedAt: string;
+  category: string; // Adicionado campo categoria
 }
 
 export default function ComerciosPage() {

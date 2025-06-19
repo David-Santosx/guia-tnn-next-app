@@ -10,6 +10,7 @@ interface Commerce {
   hours: Record<string, string>;
   imageUrl: string;
   location: string;
+  category: string; // <-- Adicionado campo categoria
   createdAt?: string;
   updatedAt?: string;
 }

@@ -15,6 +15,7 @@ interface Commerce {
   hours: Record<string, string>;
   imageUrl: string;
   location: string;
+  category: string; // <-- Adicionado campo categoria
   createdAt?: string;
   updatedAt?: string;
 }
@@ -28,11 +29,20 @@ interface CommerceFormModalProps {
 
 const commerceSchema = z.object({
   name: z.string().min(3, { message: "Nome deve ter pelo menos 3 caracteres" }),
-  description: z.string().min(10, { message: "Descrição deve ter pelo menos 10 caracteres" }),
+  description: z
+    .string()
+    .min(10, { message: "Descrição deve ter pelo menos 10 caracteres" }),
   phone: z.string().min(8, { message: "Telefone inválido" }),
   rate: z.number().min(0).max(5),
-  owner: z.string().min(3, { message: "Nome do proprietário deve ter pelo menos 3 caracteres" }),
-  location: z.string().min(5, { message: "Localização deve ter pelo menos 5 caracteres" }),
+  owner: z
+    .string()
+    .min(3, {
+      message: "Nome do proprietário deve ter pelo menos 3 caracteres",
+    }),
+  location: z
+    .string()
+    .min(5, { message: "Localização deve ter pelo menos 5 caracteres" }),
+  category: z.string().min(1, { message: "Categoria é obrigatória" }), // <-- Adicionado ao schema
 });
 
 export function CommerceForm({
@@ -50,6 +60,7 @@ export function CommerceForm({
     hours: {},
     imageUrl: "",
     location: "",
+    category: "", // <-- Adicionado
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,6 +87,7 @@ export function CommerceForm({
         owner: commerce.owner || "",
         location: commerce.location || "",
         imageUrl: commerce.imageUrl || "",
+        category: commerce.category || "", // <-- Adicionado
       });
       setImagePreview(commerce.imageUrl || "");
       setHours(commerce.hours || {});
@@ -94,6 +106,7 @@ export function CommerceForm({
       hours: {},
       imageUrl: "",
       location: "",
+      category: "", // <-- Adicionado
     });
     setImageFile(null);
     setImagePreview("");
@@ -102,7 +115,9 @@ export function CommerceForm({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -149,56 +164,52 @@ export function CommerceForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       // Preparar dados do formulário com as horas de funcionamento
       const formDataWithHours = {
         ...formData,
         hours,
       };
-      
+
       let imageUrl = formData.imageUrl;
-      
+
       // Se tiver uma nova imagem, fazer upload primeiro
       if (imageFile) {
         const formDataUpload = new FormData();
         formDataUpload.append("file", imageFile);
-        
+
         const uploadResponse = await fetch("/api/comercios/upload", {
           method: "POST",
           body: formDataUpload,
         });
-        
+
         if (!uploadResponse.ok) {
           throw new Error("Falha ao fazer upload da imagem");
         }
-        
-          const uploadResult = await uploadResponse.json();
-          console.log(uploadResult);
+
+        const uploadResult = await uploadResponse.json();
         imageUrl = uploadResult.imageUrl;
       }
-      
+
       // Determinar se é uma criação ou atualização
-      const url = commerce?.id 
-        ? `/api/comercios/${commerce.id}` 
+      const url = commerce?.id
+        ? `/api/comercios/${commerce.id}`
         : "/api/comercios";
-      
+
       const method = commerce?.id ? "PUT" : "POST";
-      
-      // Após obter a URL da imagem do upload
-      console.log("URL da imagem após upload:", imageUrl);
-      
+
       // Antes de enviar os dados para a API
       const dataToSend = {
         ...formDataWithHours,
         imageUrl,
+        category: formData.category, // <-- Enviar categoria
       };
-      console.log("Dados completos enviados:", dataToSend);
-      
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -207,12 +218,10 @@ export function CommerceForm({
         body: JSON.stringify(dataToSend),
       });
 
-      console.log(response.bodyUsed)
-      
       if (!response.ok) {
         throw new Error("Falha ao salvar comércio");
       }
-      
+
       onCommerceAdded();
       onClose();
       resetForm();
@@ -331,6 +340,29 @@ export function CommerceForm({
                   <p className="text-red-400 text-xs mt-1">{errors.location}</p>
                 )}
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Categoria*
+                </label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                  required
+                >
+                  <option value="">Selecione...</option>
+                  <option value="ALIMENTACAO">Alimentação</option>
+                  <option value="SAUDE">Saúde</option>
+                  <option value="SERVICOS">Serviços</option>
+                  <option value="COMERCIO">Comércio</option>
+                  <option value="OUTROS">Outros</option>
+                </select>
+                {errors.category && (
+                  <p className="text-red-400 text-xs mt-1">{errors.category}</p>
+                )}
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -347,7 +379,9 @@ export function CommerceForm({
                   required
                 />
                 {errors.description && (
-                  <p className="text-red-400 text-xs mt-1">{errors.description}</p>
+                  <p className="text-red-400 text-xs mt-1">
+                    {errors.description}
+                  </p>
                 )}
               </div>
 

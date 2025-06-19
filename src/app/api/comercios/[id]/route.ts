@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest, props: {params: RouteParams, sea
     const id = (await props.params).id;
     const body = await request.json();
     
-    const { name, description, phone, rate, owner, hours, imageUrl, location } = body;
+    const { name, description, phone, rate, owner, hours, imageUrl, location, category } = body; // <-- Adicionado category
     
     if (!id) {
       return NextResponse.json(
@@ -90,6 +90,7 @@ export async function PUT(request: NextRequest, props: {params: RouteParams, sea
         hours: hoursData !== undefined ? hoursData : undefined,
         imageUrl: imageUrl || undefined,
         location: location || undefined,
+        category: category || undefined, // <-- Atualiza categoria
       }
     });
     

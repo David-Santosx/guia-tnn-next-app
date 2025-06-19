@@ -18,6 +18,7 @@ interface Commerce {
   location: string;
   createdAt: string;
   updatedAt: string;
+  category?: string; // <-- Adicionado campo opcional
 }
 
 export default function ComerciosPage() {
@@ -25,16 +26,20 @@ export default function ComerciosPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Filtros
+  const [categoriaFiltro, setCategoriaFiltro] = useState<string>("TODOS");
+  const [busca, setBusca] = useState<string>("");
+
   useEffect(() => {
     const fetchComercios = async () => {
       try {
         setIsLoading(true);
         const response = await fetch("/api/comercios");
-        
+
         if (!response.ok) {
           throw new Error("Falha ao buscar comércios");
         }
-        
+
         const data = await response.json();
         setComercios(data);
       } catch (err) {
@@ -44,31 +49,32 @@ export default function ComerciosPage() {
         setIsLoading(false);
       }
     };
-    
+
     fetchComercios();
   }, []);
 
   // Verificar se o comércio está aberto no momento atual
   const verificarAberto = (hours: Record<string, string>) => {
     if (!hours || Object.keys(hours).length === 0) return false;
-    
+
     const agora = new Date();
-    const diaSemana = format(agora, 'EEEE', { locale: ptBR });
+    const diaSemana = format(agora, "EEEE", { locale: ptBR });
     const horaAtual = agora.getHours() * 60 + agora.getMinutes();
-    
+
     // Verificar se o dia da semana está no formato correto (primeira letra maiúscula)
-    const diaSemanaFormatado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
-    
+    const diaSemanaFormatado =
+      diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+
     // Tentar diferentes formatos possíveis do dia da semana
     const formatos = [
-      diaSemana,                    // "segunda-feira"
-      diaSemanaFormatado,           // "Segunda-feira"
-      diaSemana.split('-')[0],      // "segunda"
-      diaSemanaFormatado.split('-')[0], // "Segunda"
+      diaSemana, // "segunda-feira"
+      diaSemanaFormatado, // "Segunda-feira"
+      diaSemana.split("-")[0], // "segunda"
+      diaSemanaFormatado.split("-")[0], // "Segunda"
     ];
-    
+
     let horarioHoje = null;
-    
+
     // Verificar cada formato possível
     for (const formato of formatos) {
       if (hours[formato]) {
@@ -76,39 +82,57 @@ export default function ComerciosPage() {
         break;
       }
     }
-    
+
     // Se não encontrar, verificar se existe alguma chave que contenha o dia da semana
     if (!horarioHoje) {
       for (const key of Object.keys(hours)) {
-        if (key.toLowerCase().includes(diaSemana.split('-')[0].toLowerCase())) {
+        if (key.toLowerCase().includes(diaSemana.split("-")[0].toLowerCase())) {
           horarioHoje = hours[key];
           break;
         }
       }
     }
-    
+
     if (!horarioHoje || horarioHoje === "Fechado") return false;
-    
+
     // Verificar se o formato é "HH:MM - HH:MM"
     if (!/\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}/.test(horarioHoje)) return false;
-    
-    const [abertura, fechamento] = horarioHoje.split("-").map(s => s.trim());
+
+    const [abertura, fechamento] = horarioHoje.split("-").map((s) => s.trim());
     const [horaAbertura, minAbertura] = abertura.split(":").map(Number);
     const [horaFechamento, minFechamento] = fechamento.split(":").map(Number);
-    
+
     const minutosAbertura = horaAbertura * 60 + minAbertura;
     const minutosFechamento = horaFechamento * 60 + minFechamento;
-    
+
     return horaAtual >= minutosAbertura && horaAtual <= minutosFechamento;
   };
 
-  // Separar comércios abertos e fechados
-  const comerciosAbertos = comercios.filter(comercio => 
+  // Obter categorias únicas dos comércios
+  const categorias = [
+    "TODOS",
+    ...Array.from(new Set(comercios.map((c) => c.category).filter(Boolean))),
+  ];
+
+  // Filtrar comércios por categoria e busca
+  const comerciosFiltrados = comercios.filter((comercio) => {
+    const categoriaOk =
+      categoriaFiltro === "TODOS" ||
+      (comercio.category || "OUTROS") === categoriaFiltro;
+    const buscaOk =
+      busca.trim() === "" ||
+      comercio.name.toLowerCase().includes(busca.toLowerCase()) ||
+      (comercio.description &&
+        comercio.description.toLowerCase().includes(busca.toLowerCase()));
+    return categoriaOk && buscaOk;
+  });
+
+  // Separar abertos e fechados após filtro
+  const comerciosAbertos = comerciosFiltrados.filter((comercio) =>
     verificarAberto(comercio.hours)
   );
-  
-  const comerciosFechados = comercios.filter(comercio => 
-    !verificarAberto(comercio.hours)
+  const comerciosFechados = comerciosFiltrados.filter(
+    (comercio) => !verificarAberto(comercio.hours)
   );
 
   return (
@@ -124,9 +148,9 @@ export default function ComerciosPage() {
         </p>
 
         {/* Banner para adicionar comércio */}
-        <div className="mb-4 rounded-xl bg-brand-blue/10 border border-brand-blue/20 px-6 py-4 flex items-center gap-4 shadow-sm">
+        <div className="mb-4 rounded-xl bg-brand-blue/10 border border-brand-blue/20 p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4 shadow-sm">
           <svg
-            className="w-7 h-7 text-brand-blue"
+            className="w-7 h-7 text-brand-blue shrink-0"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -139,29 +163,28 @@ export default function ComerciosPage() {
             />
           </svg>
           <div className="flex-1">
-            <span className="font-semibold text-brand-blue">
+            <span className="block font-semibold text-brand-blue">
               Tem um comércio e quer aparecer aqui?
             </span>
-            <span className="block text-sm text-brand-blue/80">
-              Entre em contato conosco para adicionar seu estabelecimento à
-              lista!
+            <span className="block text-sm text-brand-blue/80 mt-1">
+              Entre em contato conosco para adicionar seu estabelecimento à lista!
             </span>
           </div>
           <a
             href="mailto:guiatnn@hotmail.com?subject=Adicionar%20meu%20comércio%20em%20Terra%20Nova%20do%20Norte"
-            className="inline-block bg-brand-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-blue/90 transition"
+            className="w-full md:w-auto text-center bg-brand-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-blue/90 transition"
           >
             Entrar em contato
           </a>
         </div>
 
         {/* Âncora para o curso de design de sobrancelhas */}
-        <div className="mb-8 rounded-xl bg-gradient-to-r from-pink-50 to-orange-50 border border-pink-200/20 px-6 py-4 flex items-center gap-4 shadow-sm group transition-all hover:shadow-md">
+        <div className="mb-8 rounded-xl bg-gradient-to-r from-pink-50 to-orange-50 border border-pink-200/20 p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4 shadow-sm group transition-all hover:shadow-md">
           <div className="flex-1">
-            <span className="font-medium text-gray-900">
+            <span className="block font-medium text-gray-900">
               Já pensou em ter seu próprio negócio?
             </span>
-            <span className="block text-sm text-gray-600">
+            <span className="block text-sm text-gray-600 mt-1">
               Seja uma profissional em design de sobrancelhas e comece sua história de sucesso em Terra Nova do Norte!
             </span>
           </div>
@@ -169,13 +192,58 @@ export default function ComerciosPage() {
             href="https://lotustrainings.com/design-profissional-lotus?ref=C100377876A"
             target="_blank"
             rel="sponsored"
-            className="inline-flex items-center bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-orange/90 transition group-hover:translate-x-1"
+            className="w-full md:w-auto text-center inline-flex items-center justify-center bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-orange/90 transition group-hover:translate-x-1"
           >
             Conhecer o curso
-            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </a>
+        </div>
+
+        {/* Filtros */}
+        <div className="mb-8 flex flex-col md:flex-row gap-4 items-stretch md:items-end">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Categoria
+            </label>
+            <select
+              className="w-full md:w-48 px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900"
+              value={categoriaFiltro}
+              onChange={(e) => setCategoriaFiltro(e.target.value)}
+            >
+              {categorias.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat === "TODOS"
+                    ? "Todas as categorias"
+                    : (cat ?? "Outros").charAt(0).toUpperCase() +
+                      (cat ?? "Outros").slice(1).toLowerCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Buscar por nome ou descrição
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900"
+              placeholder="Digite para buscar..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* Estado de carregamento */}
@@ -224,9 +292,14 @@ export default function ComerciosPage() {
         {/* Lista de comércios abertos */}
         {!isLoading && !error && comerciosAbertos.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-green-600 mb-6 flex items-center">
-              <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-              Comércios Abertos Agora
+            <h2 className="flex flex-wrap items-center gap-3 mb-6">
+              <div className="flex items-center">
+                <span className="inline-block w-2 h-8 bg-brand-orange rounded-full mr-3"></span>
+                <span className="text-2xl font-bold text-gray-800">Comércios Abertos Agora</span>
+              </div>
+              <span className="inline-flex items-center px-2.5 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full whitespace-nowrap">
+                {comerciosAbertos.length} {comerciosAbertos.length === 1 ? 'local' : 'locais'}
+              </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {comerciosAbertos.map((comercio) => (
@@ -243,9 +316,14 @@ export default function ComerciosPage() {
         {/* Lista de comércios fechados */}
         {!isLoading && !error && comerciosFechados.length > 0 && (
           <section>
-            <h2 className="text-2xl font-semibold text-gray-600 mb-6 flex items-center">
-              <span className="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
-              Comércios Fechados
+            <h2 className="flex flex-wrap items-center gap-3 mb-6">
+              <div className="flex items-center">
+                <span className="inline-block w-2 h-8 bg-gray-300 rounded-full mr-3"></span>
+                <span className="text-2xl font-bold text-gray-800">Comércios Fechados</span>
+              </div>
+              <span className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap">
+                {comerciosFechados.length} {comerciosFechados.length === 1 ? 'local' : 'locais'}
+              </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {comerciosFechados.map((comercio) => (

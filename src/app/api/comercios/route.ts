@@ -12,10 +12,11 @@ const commerceSchema = z.object({
   phone: z.string().optional().nullable(),
   rate: z.number().min(0).max(5).optional().nullable(),
   owner: z.string().min(1, { message: 'Proprietário é obrigatório' }),
-  hours: z.any().optional().nullable(), // Alterado para aceitar objeto JSON
+  hours: z.any().optional().nullable(),
   imageUrl: z.string().url({ message: 'URL de imagem inválida' }),
   location: z.string().min(1, { message: 'Localização é obrigatória' }),
   uploadedById: z.string().optional().nullable(),
+  category: z.string().min(1, { message: 'Categoria é obrigatória' }), // <-- Torna obrigatório
 });
 
 
@@ -35,15 +36,11 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-
     const contentType = request.headers.get('content-type');
-    
     let data;
     if (contentType?.includes('application/json')) {
-
       data = await request.json();
-      
-      const { name, description, phone, rate, owner, hours, imageUrl, location, uploadedById } = data;
+      const { name, description, phone, rate, owner, hours, imageUrl, location, uploadedById, category } = data;
       
       // Validação dos dados
       const validationResult = commerceSchema.safeParse({
@@ -55,7 +52,8 @@ export async function POST(request: Request) {
         hours,
         imageUrl,
         location,
-        uploadedById
+        uploadedById,
+        category, // <-- Incluído na validação
       });
 
       if (!validationResult.success) {
@@ -76,7 +74,8 @@ export async function POST(request: Request) {
           hours: typeof hours === 'string' ? JSON.parse(hours) : hours,
           imageUrl,
           location,
-          uploadedById
+          uploadedById,
+          category, // <-- Incluído no banco
         }
       });
 
@@ -95,6 +94,7 @@ export async function POST(request: Request) {
       const image = formData.get('image') as File;
       const location = formData.get('location') as string;
       const uploadedById = formData.get('uploadedById') as string | null;
+      const category = formData.get('category') as string;
 
       if (!name || !owner || !location || !image) {
         return NextResponse.json({ error: 'Dados incompletos' }, { status: 400 });
@@ -113,7 +113,8 @@ export async function POST(request: Request) {
         hours,
         imageUrl,
         location,
-        uploadedById
+        uploadedById,
+        category, // <-- Incluído na validação
       });
 
       if (!validationResult.success) {
@@ -134,7 +135,8 @@ export async function POST(request: Request) {
           hours: typeof hours === 'string' ? JSON.parse(hours) : hours,
           imageUrl,
           location,
-          uploadedById
+          uploadedById,
+          category, // <-- Incluído no banco
         }
       });
 

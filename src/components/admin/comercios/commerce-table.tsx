@@ -11,6 +11,7 @@ interface Commerce {
   hours: Record<string, string>;
   imageUrl: string;
   location: string;
+  category: string; // <-- Adicionado campo categoria
   createdAt: string;
   updatedAt: string;
 }
@@ -21,12 +22,18 @@ interface CommerceTableProps {
   onDelete: (id: string) => void;
 }
 
-export function CommerceTable({ comercios, onEdit, onDelete }: CommerceTableProps) {
+export function CommerceTable({
+  comercios,
+  onEdit,
+  onDelete,
+}: CommerceTableProps) {
   if (comercios.length === 0) {
     return (
       <div className="text-center py-10 bg-gray-800/50 rounded-lg border border-gray-700">
         <p className="text-gray-400">Nenhum comércio cadastrado.</p>
-        <p className="text-gray-500 text-sm mt-1">Clique em &quot;Novo Comércio&quot; para adicionar.</p>
+        <p className="text-gray-500 text-sm mt-1">
+          Clique em &quot;Novo Comércio&quot; para adicionar.
+        </p>
       </div>
     );
   }
@@ -53,6 +60,9 @@ export function CommerceTable({ comercios, onEdit, onDelete }: CommerceTableProp
             </th>
             <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
               Localização
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Categoria
             </th>
             <th className="px-4 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
               Ações
@@ -92,6 +102,9 @@ export function CommerceTable({ comercios, onEdit, onDelete }: CommerceTableProp
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
                 {comercio.location}
+              </td>
+              <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
+                {comercio.category}
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                 <button

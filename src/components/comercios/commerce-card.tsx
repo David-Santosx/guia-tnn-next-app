@@ -13,6 +13,7 @@ interface CommerceCardProps {
     hours: Record<string, string>;
     imageUrl: string;
     location: string;
+    category?: string; // <-- Adicionado campo opcional
   };
   isOpen: boolean;
 }
@@ -124,57 +125,80 @@ export default function CommerceCard({ commerce, isOpen }: CommerceCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full flex flex-col border border-gray-100">
+    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col border border-gray-100 group hover:border-brand-orange/20">
       {/* Imagem do comércio */}
-      <div className="relative aspect-square">
+      <div className="relative aspect-video">
         <Image
           src={imageUrl || "/placeholder-commerce.jpg"}
           alt={name}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
         {/* Badge de status (aberto/fechado) */}
         <div
-          className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium ${
-            isOpen ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+          className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium shadow-sm backdrop-blur-sm ${
+            isOpen ? "bg-green-500/90 text-white" : "bg-gray-900/90 text-white"
           }`}
         >
-          {isOpen ? "Aberto" : "Fechado"}
+          {isOpen ? "Aberto agora" : "Fechado"}
         </div>
 
         {/* Avaliação */}
-        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center">
-          <div className="flex items-center">{renderStars(rate)}</div>
-          <span className="ml-1 text-xs font-medium text-gray-700">
+        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm flex items-center">
+          <div className="flex items-center space-x-0.5">
+            {renderStars(rate)}
+          </div>
+          <span className="ml-2 text-xs font-semibold text-gray-700 border-l border-gray-200 pl-2">
             {rate.toFixed(1)}
           </span>
         </div>
       </div>
 
       {/* Conteúdo do card */}
-      <div className="p-4 flex-grow flex flex-col">
-        <h3 className="text-lg font-semibold text-brand-blue mb-1">{name}</h3>
+      <div className="p-5 flex-grow flex flex-col">
+        <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-brand-blue transition-colors">
+          {name}
+        </h3>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{description}</p>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+          {description}
+        </p>
 
-        <div className="mt-auto space-y-2">
+        {commerce.category && (
+          <div className="mb-4">
+            <span className="inline-block bg-brand-orange/10 text-brand-orange text-xs px-3 py-1.5 rounded-full font-semibold">
+              {commerce.category}
+            </span>
+          </div>
+        )}
+
+        <div className="mt-auto space-y-3">
           {/* Telefone */}
-          <div className="flex items-center text-sm text-gray-700">
-            <Phone className="w-4 h-4 text-brand-orange mr-2" />
-            <span>{formatPhone(phone)}</span>
+          <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
+            <Phone className="w-4 h-4 text-brand-orange mr-2.5" />
+            <span className="font-medium">{formatPhone(phone)}</span>
           </div>
 
           {/* Localização */}
-          <div className="flex items-center text-sm text-gray-700">
-            <MapPin className="w-4 h-4 text-brand-orange mr-2" />
-            <span className="line-clamp-1">{location}</span>
+          <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
+            <MapPin className="w-4 h-4 text-brand-orange mr-2.5" />
+            <span className="line-clamp-1 font-medium">{location}</span>
           </div>
 
           {/* Horário de hoje */}
           <div className="flex items-center text-sm text-gray-700">
-            <Clock className="w-4 h-4 text-brand-orange mr-2" />
-            <span>Hoje: {getHorarioHoje()}</span>
+            <Clock className="w-4 h-4 text-brand-orange mr-2.5" />
+            <span className="font-medium">Hoje: {getHorarioHoje()}</span>
+          </div>
+
+          {/* Observação sobre feriados */}
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="flex items-start space-x-2">
+              <span className="text-xs text-gray-500 italic leading-relaxed">
+                * Os horários podem ser diferentes em feriados e datas especiais
+              </span>
+            </div>
           </div>
         </div>
       </div>
