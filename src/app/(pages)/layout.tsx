@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import type { Metadata } from "next";
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guiatnn.com.br"),
@@ -23,6 +24,7 @@ export default function PagesLayout({
         <meta name="google-adsense-account" content="ca-pub-1306875437034957" />
       </head>
       <Header />
+      <Toaster position="top-right" />
       <main>{children}</main>
       <Footer />
     </>

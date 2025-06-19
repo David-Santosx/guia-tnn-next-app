@@ -16,10 +16,10 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Maria Silva",
-    role: "Moradora há 15 anos",
-    description: "Moro em Terra Nova há 15 anos e não trocaria por nenhum outro lugar. A tranquilidade e o acolhimento das pessoas fazem toda diferença.",
-    avatar: "https://avatar.iran.liara.run/public/55",
+    name: "Mikael Natann",
+    role: "Nascido e criado em Terra Nova do Norte",
+    description: "Nasci e cresci aqui, acompanhando a evolução de nossa cidade ao longo das gestões. Terra Nova já foi um lugar onde muita gente não gostaria de estar. Hoje a conversa é diferente: com mais investimentos, infraestrutura, asfalto, hospital quase pronto, estamos entre as melhores do MT. Não temos do que reclamar.",
+    avatar: "https://instagram.fops5-1.fna.fbcdn.net/v/t51.2885-19/419044914_2001557476894259_2819750921138841739_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fops5-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2QFP1bfPZdQEpwaVynVhDk1R9_2R2NLuVfweVTfPDLgcdkfOaAHQye1O1ViNkP6JsOE&_nc_ohc=nmmUDggH9lkQ7kNvwGzT5G6&_nc_gid=lwLxW5YZGxUjp310ALf9eA&edm=APoiHPcBAAAA&ccb=7-5&oh=00_AfMKiUSPgiNKKqW_KDkA0P30ud198vrHn6p3Tgfa30miYg&oe=68588312&_nc_sid=22de04",
     rating: 5,
   },
   {
