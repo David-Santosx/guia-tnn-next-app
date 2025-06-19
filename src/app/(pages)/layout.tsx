@@ -19,6 +19,9 @@ export default function PagesLayout({
 }) {
   return (
     <>
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-1306875437034957" />
+      </head>
       <Header />
       <main>{children}</main>
       <Footer />
