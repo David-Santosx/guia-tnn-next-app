@@ -28,7 +28,7 @@ type PageParams = Promise<{ id: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // Componente principal da página de detalhes do evento
-export default async function EventoDetalhePage(props: { params: PageParams, searchParams: SearchParams }) {
+export default async function EventoDetalhePage(props: { params: Promise<PageParams>, searchParams: Promise<SearchParams> }) {
   const event = await getEventById((await props.params).id);
 
   // Se o evento não for encontrado, retorna 404

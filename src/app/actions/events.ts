@@ -26,7 +26,7 @@ export async function createEvent(formData: FormData) {
     const organization = 'TNN';
 
     // Obter o token de autenticação
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = (await cookieStore).get('auth_token');
 
     if (!authToken) {

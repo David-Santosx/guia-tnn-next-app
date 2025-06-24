@@ -9,7 +9,8 @@ async function getCommerce(id: string): Promise<Commerce | null> {
   return res.json();
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const commerce = await getCommerce(params.id);
   if (!commerce) return {};
   const url = `${process.env.NEXT_PUBLIC_URL}/comercios/${params.id}`;
@@ -75,7 +76,8 @@ function renderHours(hours: any) {
   return <span>{String(hours)}</span>;
 }
 
-export default async function CommercePage({ params }: { params: { id: string } }) {
+export default async function CommercePage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const commerce = await getCommerce(params.id);
   if (!commerce) return notFound();
 

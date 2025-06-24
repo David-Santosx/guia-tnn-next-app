@@ -7,7 +7,7 @@ type RouteParams = Promise<{ id: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET handler para buscar uma foto específica
-export async function GET(request: NextRequest, props: { params: RouteParams, searchParams: SearchParams }) {
+export async function GET(request: NextRequest, props: { params: Promise<RouteParams>, searchParams: Promise<SearchParams> }) {
   try {
     const id = (await props.params).id;
 
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest, props: { params: RouteParams, se
 // DELETE handler para excluir uma foto
 export async function DELETE(
   request: NextRequest,
-  props: {params: RouteParams, searchParams: SearchParams}
+  props: {params: Promise<RouteParams>, searchParams: Promise<SearchParams>}
 ) {
   try {
     const id = (await props.params).id;

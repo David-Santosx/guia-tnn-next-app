@@ -7,7 +7,7 @@ type RouteParams = Promise<{ id: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 // GET - Buscar um comércio específico
-export async function GET(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
+export async function GET(request: NextRequest, props: {params: Promise<RouteParams>, searchParams: Promise<SearchParams>}) {
   try {
     const id = (await props.params).id;
     
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest, props: {params: RouteParams, sea
 }
 
 // PUT - Atualizar um comércio específico
-export async function PUT(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
+export async function PUT(request: NextRequest, props: {params: Promise<RouteParams>, searchParams: Promise<SearchParams>}) {
   try {
     const id = (await props.params).id;
     const body = await request.json();
@@ -105,7 +105,7 @@ export async function PUT(request: NextRequest, props: {params: RouteParams, sea
 }
 
 // DELETE - Excluir um comércio específico
-export async function DELETE(request: NextRequest, props: {params: RouteParams, searchParams: SearchParams}) {
+export async function DELETE(request: NextRequest, props: {params: Promise<RouteParams>, searchParams: Promise<SearchParams>}) {
   try {
     const id = (await props.params).id;
     

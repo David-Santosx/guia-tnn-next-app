@@ -5,7 +5,7 @@ import { verifyJWT } from "@/lib/services/jwt-service";
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = (await cookieStore).get("auth_token");
 
     if (!authToken) {

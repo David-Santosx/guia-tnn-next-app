@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     const { password: _, ...adminData } = admin;
     
     // Create encrypted cookies with user data
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     
     // Set auth token cookie (encrypted)
     const encryptedToken = encrypt(token);
