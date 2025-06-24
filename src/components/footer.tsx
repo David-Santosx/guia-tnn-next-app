@@ -51,6 +51,7 @@ export default function Footer() {
       title: "Institucional",
       links: [
         { text: "Sobre Nós", href: "/sobre-nos" },
+        { text: "Anuncie Conosco", href: "/anuncie-aqui" },
         { text: "Termos de Uso", href: "/legal/termos" },
         { text: "Política de Privacidade", href: "/legal/privacidade" },
       ],
