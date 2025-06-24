@@ -6,7 +6,7 @@ import CommerceCard from "@/components/comercios/commerce-card";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-interface Commerce {
+export interface Commerce {
   id: string;
   name: string;
   description: string;

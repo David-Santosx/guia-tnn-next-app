@@ -2,6 +2,7 @@ import { Star, Phone, MapPin, Clock } from "lucide-react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import Link from "next/link";
 
 interface CommerceCardProps {
   commerce: {
@@ -125,83 +126,85 @@ export default function CommerceCard({ commerce, isOpen }: CommerceCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col border border-gray-100 group hover:border-brand-orange/20">
-      {/* Imagem do comércio */}
-      <div className="relative aspect-video">
-        <Image
-          src={imageUrl || "/placeholder-commerce.jpg"}
-          alt={name}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+    <Link href={`/comercios/${commerce.id}`} className="block group">
+      <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col border border-gray-100 group-hover:border-brand-orange/20">
+        {/* Imagem do comércio */}
+        <div className="relative aspect-video">
+          <Image
+            src={imageUrl || "/placeholder-commerce.jpg"}
+            alt={name}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
 
-        {/* Badge de status (aberto/fechado) */}
-        <div
-          className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium shadow-sm backdrop-blur-sm ${
-            isOpen ? "bg-green-500/90 text-white" : "bg-gray-900/90 text-white"
-          }`}
-        >
-          {isOpen ? "Aberto agora" : "Fechado"}
-        </div>
-
-        {/* Avaliação */}
-        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm flex items-center">
-          <div className="flex items-center space-x-0.5">
-            {renderStars(rate)}
+          {/* Badge de status (aberto/fechado) */}
+          <div
+            className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium shadow-sm backdrop-blur-sm ${
+              isOpen ? "bg-green-500/90 text-white" : "bg-gray-900/90 text-white"
+            }`}
+          >
+            {isOpen ? "Aberto agora" : "Fechado"}
           </div>
-          <span className="ml-2 text-xs font-semibold text-gray-700 border-l border-gray-200 pl-2">
-            {rate.toFixed(1)}
-          </span>
-        </div>
-      </div>
 
-      {/* Conteúdo do card */}
-      <div className="p-5 flex-grow flex flex-col">
-        <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-brand-blue transition-colors">
-          {name}
-        </h3>
-
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-          {description}
-        </p>
-
-        {commerce.category && (
-          <div className="mb-4">
-            <span className="inline-block bg-brand-orange/10 text-brand-orange text-xs px-3 py-1.5 rounded-full font-semibold">
-              {commerce.category}
+          {/* Avaliação */}
+          <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm flex items-center">
+            <div className="flex items-center space-x-0.5">
+              {renderStars(rate)}
+            </div>
+            <span className="ml-2 text-xs font-semibold text-gray-700 border-l border-gray-200 pl-2">
+              {rate.toFixed(1)}
             </span>
           </div>
-        )}
+        </div>
 
-        <div className="mt-auto space-y-3">
-          {/* Telefone */}
-          <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
-            <Phone className="w-4 h-4 text-brand-orange mr-2.5" />
-            <span className="font-medium">{formatPhone(phone)}</span>
-          </div>
+        {/* Conteúdo do card */}
+        <div className="p-5 flex-grow flex flex-col">
+          <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-brand-blue transition-colors">
+            {name}
+          </h3>
 
-          {/* Localização */}
-          <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
-            <MapPin className="w-4 h-4 text-brand-orange mr-2.5" />
-            <span className="line-clamp-1 font-medium">{location}</span>
-          </div>
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+            {description}
+          </p>
 
-          {/* Horário de hoje */}
-          <div className="flex items-center text-sm text-gray-700">
-            <Clock className="w-4 h-4 text-brand-orange mr-2.5" />
-            <span className="font-medium">Hoje: {getHorarioHoje()}</span>
-          </div>
-
-          {/* Observação sobre feriados */}
-          <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-start space-x-2">
-              <span className="text-xs text-gray-500 italic leading-relaxed">
-                * Os horários podem ser diferentes em feriados e datas especiais
+          {commerce.category && (
+            <div className="mb-4">
+              <span className="inline-block bg-brand-orange/10 text-brand-orange text-xs px-3 py-1.5 rounded-full font-semibold">
+                {commerce.category}
               </span>
+            </div>
+          )}
+
+          <div className="mt-auto space-y-3">
+            {/* Telefone */}
+            <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
+              <Phone className="w-4 h-4 text-brand-orange mr-2.5" />
+              <span className="font-medium">{formatPhone(phone)}</span>
+            </div>
+
+            {/* Localização */}
+            <div className="flex items-center text-sm text-gray-700 hover:text-brand-orange transition-colors">
+              <MapPin className="w-4 h-4 text-brand-orange mr-2.5" />
+              <span className="line-clamp-1 font-medium">{location}</span>
+            </div>
+
+            {/* Horário de hoje */}
+            <div className="flex items-center text-sm text-gray-700">
+              <Clock className="w-4 h-4 text-brand-orange mr-2.5" />
+              <span className="font-medium">Hoje: {getHorarioHoje()}</span>
+            </div>
+
+            {/* Observação sobre feriados */}
+            <div className="mt-3 pt-3 border-t border-gray-100">
+              <div className="flex items-start space-x-2">
+                <span className="text-xs text-gray-500 italic leading-relaxed">
+                  * Os horários podem ser diferentes em feriados e datas especiais
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
