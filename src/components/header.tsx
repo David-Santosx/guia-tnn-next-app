@@ -50,11 +50,11 @@ export default function Header() {
           className="transition-transform duration-300 hover:scale-105"
         >
           <Image
-            src="./brand/guia-tnn-logo.svg"
-            width={200}
-            height={63}
-            alt="Logo GUIA TNN"
-            className="w-36 md:w-40 lg:w-48 xl:w-52"
+            src="./brand/mt9-logo.svg"
+            width={100}
+            height={50}
+            alt="Logo MT 9"
+            className="w-25 md:w-30 lg:w-30 xl:w-38"
           />
         </Link>
 

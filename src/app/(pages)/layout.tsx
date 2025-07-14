@@ -5,11 +5,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://guiatnn.com.br"),
-  title: "Guia TNN - Terra Nova do Norte | Seu guia completo sobre a cidade",
+  title: "MT 9 - Terra Nova do Norte | Seu guia completo sobre a cidade",
   description:
-    "Descubra Terra Nova do Norte através do Guia TNN. Eventos, comércios, galeria de fotos e informações completas sobre a cidade no coração de Mato Grosso.",
+    "Descubra Terra Nova do Norte através do MT 9. Eventos, comércios, galeria de fotos e informações completas sobre a cidade no coração de Mato Grosso.",
   keywords:
-    "Terra Nova do Norte, Guia TNN, Mato Grosso, turismo, eventos, comércios, galeria de fotos",
+    "Terra Nova do Norte, MT 9, Mato Grosso, turismo, eventos, comércios, galeria de fotos",
   // ... outras meta tags conforme necessário
 };
 

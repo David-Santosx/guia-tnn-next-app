@@ -93,15 +93,15 @@ export default function Footer() {
           <div className="w-full md:w-1/4 mb-8 md:mb-0">
             <Link href="/" className="inline-block mb-4">
               <Image
-                src="./brand/guia-tnn-logo.svg"
+                src="./brand/mt9-logo.svg"
                 width={280}
                 height={76}
-                alt="Logo GUIA TNN"
+                alt="Logo MT 9"
                 className="w-36 md:w-40 bg-white px-3 rounded-sm"
               />
             </Link>
-            <p className="text-gray-300 text-sm">
-              Seu guia completo sobre Terra Nova do Norte, Mato Grosso.
+            <p className="text-gray-300 text-xs max-w-xs">
+              Notícias, eventos, comércio local e muito mais.
             </p>
           </div>
 

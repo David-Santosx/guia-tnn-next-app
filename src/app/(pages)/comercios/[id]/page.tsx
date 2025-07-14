@@ -30,7 +30,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
         },
       ],
       type: "article",
-      siteName: "Guia TNN",
+      siteName: "MT 9",
     },
     twitter: {
       card: "summary_large_image",
@@ -46,7 +46,7 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
       commerce.category || "",
       "Terra Nova do Norte",
       "comércio local",
-      "Guia TNN",
+      "MT 9",
       ...(commerce.description ? commerce.description.split(" ") : []),
     ],
   };

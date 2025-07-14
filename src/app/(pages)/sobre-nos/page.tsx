@@ -24,7 +24,7 @@ export default function SobreNosPage() {
     {
       name: 'David Santos',
       role: 'Fundador e CEO - Desenvolvimento e Design',
-      bio: 'Fundador e CEO do Guia TNN, responsável pelo desenvolvimento e design da plataforma.',
+      bio: 'Fundador e CEO do MT 9, responsável pelo desenvolvimento e design da plataforma.',
       avatar: 'https://avatars.githubusercontent.com/u/193115016?v=4',
       },
   ];
@@ -32,7 +32,7 @@ export default function SobreNosPage() {
   const milestones = [
     {
       year: '2024',
-      title: 'Fundação do Guia TNN',
+      title: 'Fundação do MT 9',
       description: 'Inicío das ideias e protótipos de um site incial.',
       icon: Calendar,
     },
@@ -51,7 +51,7 @@ export default function SobreNosPage() {
     {
       year: 'Mar, 2025',
       title: 'Lançamento do Site',
-      description: 'O Guia TNN está pronto para ser lançado e oferecer uma experiência completa aos visitantes.',
+      description: 'O MT 9 está pronto para ser lançado e oferecer uma experiência completa aos visitantes.',
       icon: Heart,
     },
   ];
@@ -63,7 +63,7 @@ export default function SobreNosPage() {
         <section className="mb-16">
           <ScrollReveal preset="fade">
             <h1 className="text-4xl md:text-5xl font-bold text-brand-blue mb-4 text-center">
-              Sobre o Guia TNN
+              Sobre o MT 9
             </h1>
             <p className="text-gray-600 text-center max-w-2xl mx-auto mb-8">
               Conheça nossa história, missão e o time por trás do mais novo portal de informações e guia virtual de Terra Nova do Norte
@@ -104,7 +104,7 @@ export default function SobreNosPage() {
 
             <div className="space-y-4 text-gray-600">
               <p>
-                O Guia TNN é o mais novo guia virtual de Terra Nova do Norte, 
+                O MT 9 é o mais novo guia virtual de Terra Nova do Norte, 
                 criado com o objetivo de promover a cidade, seus eventos, comércios e atrações.
               </p>
               <p>
@@ -249,7 +249,7 @@ export default function SobreNosPage() {
           </ScrollReveal>
         </section>
 
-        {/* Seção Quem está por trás do GUIA TNN */}
+        {/* Seção Quem está por trás do MT 9 */}
         <section className="mb-16">
           <ScrollReveal preset="slide" direction="up" className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
             <div className="flex items-center mb-6">
@@ -257,12 +257,12 @@ export default function SobreNosPage() {
                 <Users className="w-6 h-6 text-brand-orange" />
               </div>
               <h2 className="text-2xl md:text-3xl font-semibold text-brand-blue ml-3">
-                Quem está por trás do GUIA TNN
+                Quem está por trás do MT 9
               </h2>
             </div>
 
             <p className="text-gray-600 mb-8">
-              Conheça o profissional dedicado que trabalha para fazer do Guia TNN 
+              Conheça o profissional dedicado que trabalha para fazer do MT 9 
               a melhor fonte de informações sobre Terra Nova do Norte.
             </p>
 
@@ -308,7 +308,7 @@ export default function SobreNosPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <p className="text-gray-600">
-                  Tem alguma dúvida, sugestão ou gostaria de anunciar no Guia TNN? 
+                  Tem alguma dúvida, sugestão ou gostaria de anunciar no MT 9? 
                   Entre em contato conosco pelos canais abaixo:
                 </p>
 

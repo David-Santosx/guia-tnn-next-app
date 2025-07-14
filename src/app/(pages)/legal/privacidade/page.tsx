@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata = {
-  title: "Política de Privacidade | Guia TNN",
+  title: "Política de Privacidade | MT 9",
   description: "Política de privacidade e proteção de dados do Guia Terra Nova do Norte",
 };
 
@@ -34,7 +34,7 @@ export default function PrivacidadePage() {
                 1. Introdução
               </h2>
               <p>
-                O Guia Terra Nova do Norte (&quot;Guia TNN&quot;) está
+                O Guia Terra Nova do Norte (&quot;MT 9&quot;) está
                 comprometido em proteger sua privacidade. Esta Política de
                 Privacidade explica como coletamos, usamos, divulgamos e
                 protegemos suas informações pessoais quando você utiliza nosso

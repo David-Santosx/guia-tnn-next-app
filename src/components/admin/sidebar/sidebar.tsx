@@ -59,10 +59,10 @@ export function Sidebar() {
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-800">
           <Link href="/admin" className="flex items-center">
             <Image
-              src="./brand/guia-tnn-logo.svg"
+              src="./brand/mt9-logo.svg"
               width={120}
               height={40}
-              alt="Guia TNN"
+              alt="MT 9"
               className="bg-white px-2 py-1 rounded-sm"
             />
           </Link>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata = {
-  title: "Termos de Uso | Guia TNN",
+  title: "Termos de Uso | MT 9",
   description: "Termos e condições de uso do Guia Terra Nova do Norte",
 };
 
@@ -47,9 +47,9 @@ export default function TermosPage() {
                 2. Uso do Conteúdo
               </h2>
               <p>
-                Todo o conteúdo disponibilizado no Guia TNN, incluindo textos,
+                Todo o conteúdo disponibilizado no MT 9, incluindo textos,
                 gráficos, logotipos, ícones, imagens, clipes de áudio, downloads
-                digitais e compilações de dados, é propriedade do Guia TNN ou de
+                digitais e compilações de dados, é propriedade do MT 9 ou de
                 seus fornecedores de conteúdo e está protegido pelas leis
                 brasileiras e internacionais de direitos autorais.
               </p>
@@ -60,7 +60,7 @@ export default function TermosPage() {
                 3. Contas de Usuário
               </h2>
               <p>
-                Algumas funcionalidades do Guia TNN podem exigir registro de
+                Algumas funcionalidades do MT 9 podem exigir registro de
                 conta. Você é responsável por manter a confidencialidade de suas
                 informações de conta, incluindo senha, e por todas as atividades
                 que ocorrerem sob sua conta.
@@ -71,7 +71,7 @@ export default function TermosPage() {
               <h2 className="text-2xl font-semibold text-brand-blue mt-8">
                 4. Conduta do Usuário
               </h2>
-              <p>Ao utilizar o Guia TNN, você concorda em não:</p>
+              <p>Ao utilizar o MT 9, você concorda em não:</p>
               <ul className="space-y-2 list-disc pl-6">
                 <li>Violar quaisquer leis aplicáveis;</li>
                 <li>Publicar conteúdo difamatório, obsceno ou ofensivo;</li>
@@ -99,7 +99,7 @@ export default function TermosPage() {
                 6. Links para Sites de Terceiros
               </h2>
               <p>
-                O Guia TNN pode conter links para sites de terceiros. Esses
+                O MT 9 pode conter links para sites de terceiros. Esses
                 links são fornecidos apenas para conveniência e não significam
                 endosso ou associação com o conteúdo desses sites. Não temos
                 controle sobre o conteúdo de sites de terceiros e não assumimos
@@ -114,7 +114,7 @@ export default function TermosPage() {
               <p>
                 Reservamo-nos o direito de modificar estes termos a qualquer
                 momento. As alterações entrarão em vigor imediatamente após a
-                publicação dos termos atualizados. O uso contínuo do Guia TNN
+                publicação dos termos atualizados. O uso contínuo do MT 9
                 após tais alterações constitui sua aceitação dos novos termos.
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function TermosPage() {
                 8. Limitação de Responsabilidade
               </h2>
               <p>
-                O Guia TNN e seus colaboradores não serão responsáveis por
+                O MT 9 e seus colaboradores não serão responsáveis por
                 quaisquer danos diretos, indiretos, incidentais, consequenciais
                 ou punitivos decorrentes do acesso ou uso (ou incapacidade de
                 uso) do site.

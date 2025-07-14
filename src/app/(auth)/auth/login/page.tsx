@@ -97,17 +97,17 @@ export default function Page() {
         <div className="relative z-10 flex flex-col items-center justify-center space-y-8 px-8">
           <div className="bg-white p-4 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300">
             <Image
-              src="/brand/guia-tnn-logo.svg"
+              src="/brand/mt9-logo.svg"
               width={300}
               height={100}
-              alt="Logo GUIA TNN"
+              alt="Logo MT 9"
               className="w-64"
             />
           </div>
 
           <h1 className="text-3xl md:text-4xl font-bold text-white text-center">
             Painel Administrativo
-            <span className="block text-brand-orange mt-2">Guia TNN</span>
+            <span className="block text-brand-orange mt-2">MT 9</span>
           </h1>
 
           <p className="text-gray-300 text-center max-w-xl text-md">
@@ -124,10 +124,10 @@ export default function Page() {
           <div className="text-center">
             <div className="md:hidden flex justify-center mb-6">
               <Image
-                src="./brand/guia-tnn-logo.svg"
+                src="./brand/mt9-logo.svg"
                 width={180}
                 height={56}
-                alt="Logo GUIA TNN"
+                alt="Logo MT 9"
                 className="w-48 bg-white px-3 py-1 rounded-sm"
               />
             </div>

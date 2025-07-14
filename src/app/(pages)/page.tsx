@@ -595,7 +595,7 @@ export default function Page() {
             href="/sobre-nos"
             className="inline-flex items-center bg-white text-brand-blue px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors"
           >
-            Conheça quem está por trás do Guia TNN
+            Conheça quem está por trás do MT 9
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
